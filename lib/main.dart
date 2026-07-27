@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart'; // 1. Wajib import package riverpod
-import 'package:raih/ui/features/onboarding/views/onboarding_views.dart'; // Sesuaikan dengan path import kamu
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:raih/app/config/router.dart';
+import 'package:raih/core/theme/app_theme.dart';
 
-void main() {
-  runApp(
-    // 2. Wajib bungkus MyApp dengan ProviderScope
-    const ProviderScope(child: MyApp()),
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://hrqpqfplzkifqlebbuvc.supabase.co',
+    publishableKey: 'sb_publishable_fSNUHJj7pVE_MLSPS4S0vA_z6-tb0HH',
   );
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,15 +18,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Onboarding MVVM Riverpod',
+    return MaterialApp.router(
+      title: 'RAIH',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true, // Mengaktifkan Material 3
-        primarySwatch: Colors.blue,
-      ),
-      home:
-          const OnboardingView(), // Langsung mengarah ke halaman onboarding kamu
+      routerConfig: AppRouter.router,
+      theme: AppTheme.lightTheme,
     );
   }
 }
