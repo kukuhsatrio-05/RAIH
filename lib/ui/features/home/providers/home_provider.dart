@@ -21,7 +21,7 @@ class HomeState {
   }
 }
 
-class HomeViewModel extends AutoDisposeNotifier<HomeState> {
+class HomeViewModel extends Notifier<HomeState> {
   late final AuthRepository authRepository;
 
   @override
@@ -52,6 +52,6 @@ class HomeViewModel extends AutoDisposeNotifier<HomeState> {
 }
 
 final homeViewModelProvider =
-    NotifierProvider.autoDispose<HomeViewModel, HomeState>(() {
+    NotifierProvider<HomeViewModel, HomeState>(() {
   return HomeViewModel();
 });

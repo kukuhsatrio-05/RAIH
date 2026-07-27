@@ -13,7 +13,7 @@ class AppTheme {
         surface: AppColors.whiteNormal,
         onSurface: AppColors.blackNormal,
       ),
-      textTheme: GoogleFonts.interTextTheme(),
+      textTheme: GoogleFonts.poppinsTextTheme(),
     );
   }
 }

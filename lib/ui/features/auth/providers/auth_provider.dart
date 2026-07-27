@@ -93,12 +93,13 @@ class AuthRepository {
       throw Exception('Registrasi gagal: user tidak ditemukan');
     }
 
-    await _supabase.from('profiles').update({
+    await _supabase.from('profiles').upsert({
+      'id': user.id,
       'full_name': fullName,
       'phone_number': phoneNumber,
       'faculty': faculty,
       'is_profile_completed': true,
-    }).eq('id', user.id);
+    });
 
     return UserModel(
       id: user.id,
@@ -115,9 +116,10 @@ class AuthRepository {
       serverClientId:
           '442127038266-khc6pa6dcjdr1vnsv298aguc1qjtcsr8.apps.googleusercontent.com',
     );
-    final googleUser = await GoogleSignIn.instance.authenticate();
 
+    final googleUser = await GoogleSignIn.instance.authenticate();
     final idToken = googleUser.authentication.idToken;
+
     if (idToken == null) {
       throw Exception('Gagal mendapatkan ID Token dari Google');
     }
