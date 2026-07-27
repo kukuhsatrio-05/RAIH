@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:raih/model/onboarding_models.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 1. Buat class State untuk menampung data yang bisa berubah (indeks halaman)
 class OnboardingState {
