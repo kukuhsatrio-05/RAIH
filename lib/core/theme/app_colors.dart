@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  AppColors._();
+
   // 🔵 Blue Palette
   static const Color blueLight = Color(0xFFE7EBF2);
   static const Color blueLightHover = Color(0xFFDBE1EC);
