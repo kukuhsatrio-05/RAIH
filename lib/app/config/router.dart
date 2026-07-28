@@ -21,7 +21,7 @@ class AppRouter {
   static const _authRoutes = ['/auth-option', '/login', '/register'];
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/mading',
     redirect: (context, state) {
       final session = Supabase.instance.client.auth.currentSession;
       final isLoggedIn = session != null;
