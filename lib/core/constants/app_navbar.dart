@@ -9,35 +9,35 @@ class AppNavbar {
     NavItemModel(
       title: "Beranda",
       icon: Icons.home_outlined,
-      activeIcon: Icons.home,
+      activeIcon: Icons.home_outlined,
       route: "/home",
     ),
 
     NavItemModel(
       title: "Mading",
-      icon: Icons.article_outlined,
-      activeIcon: Icons.article,
+      icon: Icons.info_outline,
+      activeIcon: Icons.info_outline,
       route: "/mading",
     ),
 
     NavItemModel(
       title: "Unggah",
       icon: Icons.add_circle_outline,
-      activeIcon: Icons.add_circle,
+      activeIcon: Icons.add_circle_outline,
       route: "/upload",
     ),
 
     NavItemModel(
       title: "Materi",
       icon: Icons.menu_book_outlined,
-      activeIcon: Icons.menu_book,
+      activeIcon: Icons.menu_book_outlined,
       route: "/materi",
     ),
 
     NavItemModel(
       title: "Profil",
       icon: Icons.person_outline,
-      activeIcon: Icons.person,
+      activeIcon: Icons.person_outline,
       route: "/profile",
     ),
   ];

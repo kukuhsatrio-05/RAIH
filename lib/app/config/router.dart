@@ -10,11 +10,12 @@ import 'package:raih/ui/features/mading/mading_views.dart';
 import 'package:raih/ui/features/materi/materi_views.dart';
 import 'package:raih/ui/features/profile/profile_views.dart';
 import 'package:raih/ui/features/upload/upload_views.dart';
+import 'package:raih/ui/features/home/views/event_detail_view.dart';
 import 'package:raih/ui/layouts/navbar_layout.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/onboarding',
+    initialLocation: '/home',
     routes: [
       //------------------------
       // Onboarding
@@ -60,6 +61,14 @@ class AppRouter {
           GoRoute(
             path: '/home',
             builder: (context, state) => const HomeViews(),
+          ),
+
+          GoRoute(
+            path: '/detail/:id',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return EventDetailView(eventId: id);
+            },
           ),
 
           GoRoute(

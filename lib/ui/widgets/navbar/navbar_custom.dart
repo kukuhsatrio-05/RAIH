@@ -1,71 +1,92 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:raih/core/constants/const_colors.dart';
 import 'package:raih/core/constants/app_navbar.dart';
 import 'package:raih/model/navbar_item_models.dart';
-import 'package:raih/ui/widgets/navbar/navbar_item.dart';
+
+import 'navbar_item.dart';
+import 'navbar_background.dart';
 
 class CustomBottomNavbar extends StatelessWidget {
   const CustomBottomNavbar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //--------------------------------------------------
-    // Route aktif
-    //--------------------------------------------------
-
     final String currentRoute = GoRouterState.of(context).matchedLocation;
 
-    //--------------------------------------------------
-    // Index aktif
-    //--------------------------------------------------
-
     final int selectedIndex = AppNavbar.menus.indexWhere(
-      (menu) => menu.route == currentRoute,
+      (item) => item.route == currentRoute,
     );
 
-    //--------------------------------------------------
-    // Navbar
-    //--------------------------------------------------
+    final int activeIndex = selectedIndex == -1 ? 0 : selectedIndex;
 
     return SafeArea(
       top: false,
-      child: Container(
-        height: 75,
 
-        decoration: const BoxDecoration(
-          color: AppColors.whiteNormal,
+      child: SizedBox(
+        height: 88,
 
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 12,
-              offset: Offset(0, -2),
-              color: Color(0x14000000),
-            ),
-          ],
-        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
 
-        child: Row(
-          children: List.generate(AppNavbar.menus.length, (index) {
-            final NavItemModel menu = AppNavbar.menus[index];
+            final itemWidth = width / AppNavbar.menus.length;
 
-            return NavbarItem(
-              title: menu.title,
+            return TweenAnimationBuilder<double>(
+              tween: Tween<double>(end: activeIndex.toDouble()),
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              builder: (context, animValue, child) {
+                return Stack(
+                  clipBehavior: Clip.none,
 
-              icon: menu.icon,
+                  children: [
+                    //------------------------------------------------
+                    // Background
+                    //------------------------------------------------
+                    NavbarBackground(
+                      activeIndex: animValue,
+                      itemCount: AppNavbar.menus.length,
+                    ),
 
-              activeIcon: menu.activeIcon,
+                    //------------------------------------------------
+                    // Menu
+                    //------------------------------------------------
+                    for (int i = 0; i < AppNavbar.menus.length; i++)
+                      Positioned(
+                        left: itemWidth * i,
 
-              selected: index == selectedIndex,
+                        width: itemWidth,
 
-              onTap: () {
-                if (currentRoute != menu.route) {
-                  context.go(menu.route);
-                }
+                        top: 0,
+
+                        child: Builder(
+                          builder: (_) {
+                            final NavItemModel menu = AppNavbar.menus[i];
+
+                            return AnimatedNavbarItem(
+                              selected: i == selectedIndex,
+
+                              icon: menu.icon,
+
+                              activeIcon: menu.activeIcon,
+
+                              title: menu.title,
+
+                              onTap: () {
+                                if (currentRoute != menu.route) {
+                                  context.go(menu.route);
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                );
               },
             );
-          }),
+          },
         ),
       ),
     );

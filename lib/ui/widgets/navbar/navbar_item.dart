@@ -1,79 +1,117 @@
 import 'package:flutter/material.dart';
 
-import 'package:raih/core/constants/const_colors.dart';
 
-class NavbarItem extends StatelessWidget {
+class AnimatedNavbarItem extends StatelessWidget {
+  final bool selected;
+
   final IconData icon;
 
   final IconData activeIcon;
 
   final String title;
 
-  final bool selected;
-
   final VoidCallback onTap;
 
-  const NavbarItem({
+  const AnimatedNavbarItem({
     super.key,
+    required this.selected,
     required this.icon,
     required this.activeIcon,
     required this.title,
-    required this.selected,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
 
-        onTap: onTap,
+      child: SizedBox(
+        width: 72,
+        height: 80,
 
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Stack(
+          clipBehavior: Clip.none,
 
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          alignment: Alignment.center,
 
-            children: [
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
+          children: [
+            //--------------------------------------------
+            // Bubble
+            //--------------------------------------------
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
 
-                transitionBuilder: (child, animation) {
-                  return ScaleTransition(scale: animation, child: child);
-                },
+              top: selected ? -8 : 8,
+
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+
+                curve: Curves.easeInOut,
+
+                width: selected ? 56 : 42,
+
+                height: selected ? 56 : 42,
+
+                decoration: BoxDecoration(
+                  gradient: selected
+                      ? const LinearGradient(
+                          colors: [
+                            Color(0xFF7283FF), // Lighter periwinkle blue
+                            Color(0xFF4A5CFC), // Deeper periwinkle blue
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        )
+                      : null,
+                  color: selected ? null : Colors.transparent,
+
+                  shape: BoxShape.circle,
+
+                  boxShadow: selected
+                      ? [
+                          BoxShadow(
+                            color: const Color(0xFF4A5CFC).withValues(alpha: 0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ]
+                      : [],
+                ),
 
                 child: Icon(
                   selected ? activeIcon : icon,
 
-                  key: ValueKey(selected),
+                  color: selected ? Colors.white : Colors.grey,
 
-                  color: selected
-                      ? AppColors.blueNormal
-                      : AppColors.blackLightActive,
+                  size: selected ? 28 : 24,
                 ),
               ),
+            ),
 
-              const SizedBox(height: 4),
+            //--------------------------------------------
+            // Text
+            //--------------------------------------------
+            Positioned(
+              bottom: 4,
 
-              AnimatedDefaultTextStyle(
+              child: AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 250),
 
                 style: TextStyle(
                   fontSize: 11,
 
-                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
 
-                  color: selected
-                      ? AppColors.blueNormal
-                      : AppColors.blackLightActive,
+                  color: selected ? const Color(0xFF4A5CFC) : Colors.grey,
                 ),
 
                 child: Text(title),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

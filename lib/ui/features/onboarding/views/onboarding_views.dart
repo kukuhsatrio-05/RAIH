@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:raih/ui/features/providers/view_models/onboarding_viewmodel.dart';
 
 class OnboardingView extends ConsumerWidget {
-  const OnboardingView({Key? key}) : super(key: key);
+  const OnboardingView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
