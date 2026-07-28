@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class DetailDownloadButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const DetailDownloadButton({Key? key, required this.onPressed})
-    : super(key: key);
+  const DetailDownloadButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

@@ -6,11 +6,11 @@ class DetailRatingSection extends StatelessWidget {
   final Function(int) onRatingChanged;
 
   const DetailRatingSection({
-    Key? key,
+    super.key,
     required this.averageRating,
     required this.userRating,
     required this.onRatingChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

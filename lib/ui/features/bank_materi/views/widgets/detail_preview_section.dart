@@ -7,11 +7,11 @@ class DetailPreviewSection extends StatelessWidget {
   final int totalPages;
 
   const DetailPreviewSection({
-    Key? key,
+    super.key,
     required this.fileType,
     required this.fileSizeMB,
     required this.totalPages,
-  }) : super(key: key);
+  });
 
   Color _getFileColor() {
     switch (fileType) {
@@ -54,7 +54,7 @@ class DetailPreviewSection extends StatelessWidget {
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: fileColor.withOpacity(0.12),
+                    color: fileColor.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(Icons.description_outlined, color: fileColor),

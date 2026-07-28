@@ -5,7 +5,7 @@ import 'package:raih/ui/features/bank_materi/views/widgets/document_card_widget.
 
 // 3. Ubah StatelessWidget menjadi ConsumerWidget
 class BankMateriView extends ConsumerWidget {
-  const BankMateriView({Key? key}) : super(key: key);
+  const BankMateriView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -96,7 +96,7 @@ class BankMateriView extends ConsumerWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

@@ -7,11 +7,11 @@ class DetailDescriptionSection extends StatelessWidget {
   final VoidCallback onToggleExpand;
 
   const DetailDescriptionSection({
-    Key? key,
+    super.key,
     required this.description,
     required this.isExpanded,
     required this.onToggleExpand,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

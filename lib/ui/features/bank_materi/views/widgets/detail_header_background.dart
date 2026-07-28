@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DetailHeaderBackground extends StatelessWidget {
-  const DetailHeaderBackground({Key? key}) : super(key: key);
+  const DetailHeaderBackground({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class DetailHeaderBackground extends StatelessWidget {
                 height: 180,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.12),
+                  color: Colors.white.withValues(alpha: 0.12),
                 ),
               ),
             ),
@@ -39,7 +39,7 @@ class DetailHeaderBackground extends StatelessWidget {
                 height: 220,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.08),
+                  color: Colors.white.withValues(alpha: 0.08),
                 ),
               ),
             ),
@@ -51,7 +51,7 @@ class DetailHeaderBackground extends StatelessWidget {
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.10),
+                  color: Colors.white.withValues(alpha: 0.10),
                 ),
               ),
             ),

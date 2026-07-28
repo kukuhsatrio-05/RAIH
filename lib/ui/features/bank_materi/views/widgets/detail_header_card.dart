@@ -4,7 +4,7 @@ import '../../models/document_detail_model.dart';
 class DetailHeaderCard extends StatelessWidget {
   final DocumentDetailModel document;
 
-  const DetailHeaderCard({Key? key, required this.document}) : super(key: key);
+  const DetailHeaderCard({super.key, required this.document});
 
   // Helper untuk warna berdasarkan tipe file
   Color _getFileColor() {
@@ -35,7 +35,7 @@ class DetailHeaderCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -49,7 +49,7 @@ class DetailHeaderCard extends StatelessWidget {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: fileColor.withOpacity(0.12),
+                  color: fileColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -162,7 +162,7 @@ class DetailHeaderCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),

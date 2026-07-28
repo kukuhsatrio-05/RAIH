@@ -115,8 +115,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     icon: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(
-                          0.3,
+                        color: Colors.white.withValues(
+                          alpha: 0.3,
                         ), // lebih konsisten daripada withAlpha
                         shape: BoxShape.circle,
                       ),
@@ -288,8 +288,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             ),
                           ],
 
-                          const SizedBox(height: 40), // Diubah dari 60 menjadi 40 agar lebih efisien space
-
+                          const SizedBox(
+                            height: 40,
+                          ), // Diubah dari 60 menjadi 40 agar lebih efisien space
                           // 7. Tombol Masuk
                           state.isLoading
                               ? const Center(child: CircularProgressIndicator())
@@ -306,8 +307,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                                       : null,
                                 ),
 
-                          const SizedBox(height: 40), // Diubah dari 100 menjadi 40 agar tidak memicu overflow di layar HP sedang
-
+                          const SizedBox(
+                            height: 40,
+                          ), // Diubah dari 100 menjadi 40 agar tidak memicu overflow di layar HP sedang
                           // 8. Tombol Google Auth
                           GoogleAuthButton(
                             onPressed: () => notifier.loginWithGoogle(),

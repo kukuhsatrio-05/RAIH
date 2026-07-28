@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DetailSectionCard extends StatelessWidget {
   final Widget child;
 
-  const DetailSectionCard({Key? key, required this.child}) : super(key: key);
+  const DetailSectionCard({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class DetailSectionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

@@ -7,11 +7,11 @@ class DetailContributorSection extends StatelessWidget {
   final String role;
 
   const DetailContributorSection({
-    Key? key,
+    super.key,
     required this.initials,
     required this.name,
     required this.role,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
