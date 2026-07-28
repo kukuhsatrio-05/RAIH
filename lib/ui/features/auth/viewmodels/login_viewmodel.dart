@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:raih/ui/features/auth/providers/auth_provider.dart';
+import 'package:raih/ui/features/auth/viewmodels/auth_viewmodel.dart';
 
 class LoginState {
   final bool isButtonEnabled;
@@ -78,5 +78,5 @@ class LoginViewModel extends AutoDisposeNotifier<LoginState> {
 
 final loginViewModelProvider =
     NotifierProvider.autoDispose<LoginViewModel, LoginState>(() {
-  return LoginViewModel();
-});
+      return LoginViewModel();
+    });

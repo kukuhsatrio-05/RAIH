@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:raih/core/theme/app_colors.dart';
 import 'package:raih/core/theme/app_text_styles.dart';
 import 'package:raih/core/widgets/universal_button.dart';
-import 'package:raih/ui/features/home/providers/home_provider.dart';
+import 'package:raih/ui/features/home/viewmodels/home_provider.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});

@@ -1,16 +1,20 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:raih/ui/features/counter_riverpod/views/riverpod_counter_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:raih/ui/features/onboarding/views/onboarding_view.dart';
-import 'package:raih/ui/features/auth/views/auth_option_view.dart';
-import 'package:raih/ui/features/auth/views/login_view.dart';
-import 'package:raih/ui/features/auth/views/register_view.dart';
+import 'package:raih/ui/features/onboarding/views/screens/onboarding_view.dart';
+import 'package:raih/ui/features/auth/views/screens/auth_option_view.dart';
+import 'package:raih/ui/features/auth/views/screens/login_view.dart';
+import 'package:raih/ui/features/auth/views/screens/register_view.dart';
 import 'package:raih/ui/features/home/views/home_view.dart';
+import 'package:raih/ui/features/bank_materi/views/screens/material_screen.dart';
+import 'package:raih/ui/features/bank_materi/views/screens/document_detail_view.dart';
 
 class AppRouter {
-  // HAPUS '/onboarding' DARI SINI agar tidak ter-redirect otomatis saat session Supabase aktif
+  // Route yang hanya boleh diakses saat belum login
   static const _authRoutes = ['/auth-option', '/login', '/register'];
+
+  // Route yang butuh autentikasi
+  // static const _protectedRoutes = ['/bank-materi', '/bank-materi/detail', '/home'];
 
   static final GoRouter router = GoRouter(
     initialLocation: '/onboarding',
@@ -20,12 +24,13 @@ class AppRouter {
       final currentPath = state.matchedLocation;
       final isOnAuthRoute = _authRoutes.contains(currentPath);
 
-      // Sudah login tapi coba buka login/register -> redirect ke home
+      // Sudah login tapi coba buka login/register -> redirect ke bank materi
       if (isLoggedIn && isOnAuthRoute) {
-        return '/home';
+        return '/bank-materi';
       }
 
-      // Belum login tapi mau ke home -> redirect ke auth option
+      // Selama development, kita izinkan masuk ke bank-materi tanpa paksaan redirect
+      // Belum login tapi mau ke halaman protected selain bank-materi -> redirect ke auth option
       if (!isLoggedIn && currentPath == '/home') {
         return '/auth-option';
       }
@@ -60,8 +65,17 @@ class AppRouter {
       ),
       GoRoute(path: '/home', builder: (context, state) => const HomeView()),
       GoRoute(
-        path: '/counter-riverpod',
-        builder: (context, state) => const RiverpodCounterView(),
+        path: '/bank-materi',
+        builder: (context, state) => const BankMateriView(),
+        routes: [
+          GoRoute(
+            path: 'detail/:id',
+            builder: (context, state) {
+              final documentId = state.pathParameters['id'] ?? '';
+              return DocumentDetailView(documentId: documentId);
+            },
+          ),
+        ],
       ),
     ],
   );

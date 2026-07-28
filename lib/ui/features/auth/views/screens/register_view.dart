@@ -9,7 +9,7 @@ import 'package:raih/core/theme/app_text_styles.dart';
 import 'package:raih/core/widgets/universal_button.dart';
 import 'package:raih/core/widgets/universal_google_button.dart';
 import 'package:raih/core/widgets/universal_text_input.dart';
-import 'package:raih/ui/features/auth/providers/register_provider.dart';
+import 'package:raih/ui/features/auth/viewmodels/register_viewmodel.dart';
 
 class RegisterView extends ConsumerStatefulWidget {
   const RegisterView({super.key});
@@ -70,7 +70,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
 
     ref.listen<RegisterState>(registerViewModelProvider, (previous, next) {
       if (next.user != null) {
-        context.go('/home');
+        context.go('/bank-materi');
       }
     });
 

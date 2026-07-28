@@ -9,7 +9,7 @@ import 'package:raih/core/theme/app_text_styles.dart';
 import 'package:raih/core/widgets/universal_button.dart';
 import 'package:raih/core/widgets/universal_google_button.dart';
 import 'package:raih/core/widgets/universal_text_input.dart';
-import 'package:raih/ui/features/auth/providers/login_provider.dart';
+import 'package:raih/ui/features/auth/viewmodels/login_viewmodel.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
@@ -53,7 +53,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
     // Listener Navigasi
     ref.listen<LoginState>(loginViewModelProvider, (previous, next) {
       if (next.user != null) {
-        context.go('/home');
+        context.go('/bank-materi');
       }
     });
 
@@ -167,151 +167,154 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 child: SizedBox(
                   width: screenWidth > 430 ? 430 : double.infinity,
                   height: 730,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(height: 28),
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(height: 28),
 
-                        // 1. Logo Raih (Kombinasi Icon & Teks)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/icons/logo_raih_dark.png',
-                              height: 20,
-                              errorBuilder: (ctx, err, stack) => const Icon(
-                                Icons.auto_awesome,
-                                color: AppColors.blueNormal,
-                                size: 24,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Raih',
-                              style: AppTextStyles.medium16.copyWith(
-                                color: AppColors.blackNormal,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-
-                        // 2. Gambar auth_top.png
-                        Image.asset(
-                          'assets/images/auth_top.png',
-                          height: 110,
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Icon(
-                                Icons.lock_person_rounded,
-                                size: 70,
-                                color: AppColors.blueNormal,
-                              ),
-                        ),
-                        const SizedBox(height: 12),
-
-                        // 3. Judul "Selamat Datang!"
-                        Text(
-                          'Selamat Datang!',
-                          style: AppTextStyles.bold24.copyWith(
-                            color: Colors.black,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 6),
-
-                        // 4. Subtitle "Tidak punya akun? Daftar"
-                        RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: 'Tidak punya akun? ',
-                            style: AppTextStyles.regular14.copyWith(
-                              color: AppColors.blackNormal,
-                            ),
+                          // 1. Logo Raih (Kombinasi Icon & Teks)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              TextSpan(
-                                text: 'Daftar',
-                                style: AppTextStyles.bold14.copyWith(
+                              Image.asset(
+                                'assets/icons/logo_raih_dark.png',
+                                height: 20,
+                                errorBuilder: (ctx, err, stack) => const Icon(
+                                  Icons.auto_awesome,
                                   color: AppColors.blueNormal,
+                                  size: 24,
                                 ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => context.push('/register'),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Raih',
+                                style: AppTextStyles.medium16.copyWith(
+                                  color: AppColors.blackNormal,
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 28),
+                          const SizedBox(height: 16),
 
-                        // 5. Custom Form TextFields
-                        CustomTextField(
-                          label: 'Email',
-                          controller: emailController,
-                        ),
-                        const SizedBox(height: 16),
-
-                        CustomTextField(
-                          label: 'Kata Sandi',
-                          isPassword: true,
-                          isObscure: !state.isPasswordVisible,
-                          controller: passwordController,
-                          onTogglePassword: notifier.togglePasswordVisibility,
-                        ),
-                        const SizedBox(height: 10),
-
-                        // 6. Link "Lupa Kata Sandi?"
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: InkWell(
-                            onTap: () => context.push('/forgot-password'),
-                            child: Text(
-                              'Lupa Kata Sandi?',
-                              style: AppTextStyles.regular14.copyWith(
-                                color: AppColors.blueNormal,
-                              ),
-                            ),
+                          // 2. Gambar auth_top.png
+                          Image.asset(
+                            'assets/images/auth_top.png',
+                            height: 110,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(
+                                  Icons.lock_person_rounded,
+                                  size: 70,
+                                  color: AppColors.blueNormal,
+                                ),
                           ),
-                        ),
+                          const SizedBox(height: 12),
 
-                        // Pesan Error
-                        if (state.errorMessage != null) ...[
-                          const SizedBox(height: 10),
+                          // 3. Judul "Selamat Datang!"
                           Text(
-                            state.errorMessage!,
-                            style: AppTextStyles.regular12.copyWith(
-                              color: Colors.red,
+                            'Selamat Datang!',
+                            style: AppTextStyles.bold24.copyWith(
+                              color: Colors.black,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                        ],
+                          const SizedBox(height: 6),
 
-                        const SizedBox(height: 60),
-
-                        // 7. Tombol Masuk
-                        state.isLoading
-                            ? const Center(child: CircularProgressIndicator())
-                            : UniversalButton(
-                                text: 'Masuk',
-                                variant: state.isButtonEnabled
-                                    ? ButtonVariant.primary
-                                    : ButtonVariant.disabled,
-                                onPressed: state.isButtonEnabled
-                                    ? () => notifier.login(
-                                        emailController.text,
-                                        passwordController.text,
-                                      )
-                                    : null,
+                          // 4. Subtitle "Tidak punya akun? Daftar"
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: 'Tidak punya akun? ',
+                              style: AppTextStyles.regular14.copyWith(
+                                color: AppColors.blackNormal,
                               ),
+                              children: [
+                                TextSpan(
+                                  text: 'Daftar',
+                                  style: AppTextStyles.bold14.copyWith(
+                                    color: AppColors.blueNormal,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => context.push('/register'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 28),
 
-                        const SizedBox(height: 100),
+                          // 5. Custom Form TextFields
+                          CustomTextField(
+                            label: 'Email',
+                            controller: emailController,
+                          ),
+                          const SizedBox(height: 16),
 
-                        // 8. Tombol Google Auth
-                        GoogleAuthButton(
-                          onPressed: () => notifier.loginWithGoogle(),
-                        ),
-                        const SizedBox(height: 24),
-                      ],
+                          CustomTextField(
+                            label: 'Kata Sandi',
+                            isPassword: true,
+                            isObscure: !state.isPasswordVisible,
+                            controller: passwordController,
+                            onTogglePassword: notifier.togglePasswordVisibility,
+                          ),
+                          const SizedBox(height: 10),
+
+                          // 6. Link "Lupa Kata Sandi?"
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: InkWell(
+                              onTap: () => context.push('/forgot-password'),
+                              child: Text(
+                                'Lupa Kata Sandi?',
+                                style: AppTextStyles.regular14.copyWith(
+                                  color: AppColors.blueNormal,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // Pesan Error
+                          if (state.errorMessage != null) ...[
+                            const SizedBox(height: 10),
+                            Text(
+                              state.errorMessage!,
+                              style: AppTextStyles.regular12.copyWith(
+                                color: Colors.red,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+
+                          const SizedBox(height: 40), // Diubah dari 60 menjadi 40 agar lebih efisien space
+
+                          // 7. Tombol Masuk
+                          state.isLoading
+                              ? const Center(child: CircularProgressIndicator())
+                              : UniversalButton(
+                                  text: 'Masuk',
+                                  variant: state.isButtonEnabled
+                                      ? ButtonVariant.primary
+                                      : ButtonVariant.disabled,
+                                  onPressed: state.isButtonEnabled
+                                      ? () => notifier.login(
+                                          emailController.text,
+                                          passwordController.text,
+                                        )
+                                      : null,
+                                ),
+
+                          const SizedBox(height: 40), // Diubah dari 100 menjadi 40 agar tidak memicu overflow di layar HP sedang
+
+                          // 8. Tombol Google Auth
+                          GoogleAuthButton(
+                            onPressed: () => notifier.loginWithGoogle(),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                      ),
                     ),
                   ),
                 ),

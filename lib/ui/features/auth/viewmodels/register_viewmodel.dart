@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:raih/ui/features/auth/providers/auth_provider.dart';
+import 'package:raih/ui/features/auth/viewmodels/auth_viewmodel.dart';
 
 class RegisterState {
   final String? selectedFakultas;
@@ -74,14 +74,13 @@ class RegisterViewModel extends AutoDisposeNotifier<RegisterState> {
   }
 
   void toggleConfirmPasswordVisibility() {
-    state =
-        state.copyWith(isConfirmPasswordVisible: !state.isConfirmPasswordVisible);
+    state = state.copyWith(
+      isConfirmPasswordVisible: !state.isConfirmPasswordVisible,
+    );
   }
 
   bool _isEmailValid(String email) {
-    return RegExp(
-      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-    ).hasMatch(email.trim());
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email.trim());
   }
 
   bool _isPasswordValid(String password) {
@@ -99,7 +98,8 @@ class RegisterViewModel extends AutoDisposeNotifier<RegisterState> {
     String password,
     String confirmPassword,
   ) {
-    final isValid = name.trim().isNotEmpty &&
+    final isValid =
+        name.trim().isNotEmpty &&
         email.trim().isNotEmpty &&
         phone.trim().isNotEmpty &&
         state.selectedFakultas != null &&
@@ -150,5 +150,5 @@ class RegisterViewModel extends AutoDisposeNotifier<RegisterState> {
 
 final registerViewModelProvider =
     NotifierProvider.autoDispose<RegisterViewModel, RegisterState>(() {
-  return RegisterViewModel();
-});
+      return RegisterViewModel();
+    });
