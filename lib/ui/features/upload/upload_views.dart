@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:raih/model/event_model.dart';
-import 'package:raih/ui/features/home/providers/event_provider.dart';
+import 'package:raih/ui/features/home/viewmodels/event_provider.dart';
 
 class UploadView extends ConsumerStatefulWidget {
   const UploadView({super.key});
