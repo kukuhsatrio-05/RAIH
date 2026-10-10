@@ -11,8 +11,7 @@ import 'package:raih/ui/features/bank_materi/viewmodels/document_detail_viewmode
 
 class DocumentDetailView extends ConsumerStatefulWidget {
   final String documentId;
-  const DocumentDetailView({Key? key, required this.documentId})
-    : super(key: key);
+  const DocumentDetailView({super.key, required this.documentId});
 
   @override
   ConsumerState<DocumentDetailView> createState() => _DocumentDetailViewState();
@@ -106,7 +105,7 @@ class _DocumentDetailViewState extends ConsumerState<DocumentDetailView> {
       child: Align(
         alignment: Alignment.centerLeft,
         child: CircleAvatar(
-          backgroundColor: Colors.black.withOpacity(0.15),
+          backgroundColor: Colors.black.withValues(alpha:0.15),
           child: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.pop(context),

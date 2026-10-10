@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:raih/core/theme/app_colors.dart';
 
 class BrandGradientHeader extends StatelessWidget {
@@ -32,10 +31,10 @@ class BrandGradientHeader extends StatelessWidget {
             width: 160,
             height: 160,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha:0.2),
               borderRadius: BorderRadius.circular(45),
               border: Border.all(
-                color: Colors.white.withOpacity(0.35),
+                color: Colors.white.withValues(alpha:0.35),
                 width: 1,
               ),
             ),
@@ -50,7 +49,7 @@ class BrandGradientHeader extends StatelessWidget {
     width: size,
     height: size,
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.1),
+      color: Colors.white.withValues(alpha:0.1),
       shape: BoxShape.circle,
     ),
   );
