@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:raih/ui/features/onboarding/views/screens/onboarding_view.dart';
+import 'package:raih/ui/features/onboarding/views/onboarding_view.dart';
 import 'package:raih/ui/features/auth/views/screens/auth_option_view.dart';
 import 'package:raih/ui/features/auth/views/screens/login_view.dart';
 import 'package:raih/ui/features/auth/views/screens/register_view.dart';

@@ -252,7 +252,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                         // 1. Judul "Daftar"
                         Text(
                           'Daftar',
-                          style: AppTextStyles.bold37.copyWith(
+                          style: AppTextStyles.bold36.copyWith(
                             color: Colors.black,
                           ),
                           textAlign: TextAlign.left,

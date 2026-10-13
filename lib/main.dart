@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:raih/ui/features/onboarding/views/onboarding_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:raih/app/config/router.dart';
 import 'package:raih/core/theme/app_theme.dart';
@@ -18,11 +19,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'RAIH',
       debugShowCheckedModeBanner: false,
-      routerConfig: AppRouter.router,
+      // routerConfig: AppRouter.router,
       theme: AppTheme.lightTheme,
+      home: OnboardingView(),
     );
   }
 }

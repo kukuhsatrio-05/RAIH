@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:raih/core/constants/const_colors.dart';
+import 'package:raih/core/theme/app_colors.dart';
 
 class NavbarBackground extends StatelessWidget {
   final double activeIndex;
@@ -28,10 +28,7 @@ class NavbarBackgroundPainter extends CustomPainter {
   final double activeIndex;
   final int itemCount;
 
-  NavbarBackgroundPainter({
-    required this.activeIndex,
-    required this.itemCount,
-  });
+  NavbarBackgroundPainter({required this.activeIndex, required this.itemCount});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -65,16 +62,8 @@ class NavbarBackgroundPainter extends CustomPainter {
     path.lineTo(startX, y0);
 
     // Notch curve (smooth dip using cubic bezier curves)
-    path.cubicTo(
-      x0 - 25.0, y0,
-      x0 - 20.0, y0 + depth,
-      x0, y0 + depth,
-    );
-    path.cubicTo(
-      x0 + 20.0, y0 + depth,
-      x0 + 25.0, y0,
-      endX, y0,
-    );
+    path.cubicTo(x0 - 25.0, y0, x0 - 20.0, y0 + depth, x0, y0 + depth);
+    path.cubicTo(x0 + 20.0, y0 + depth, x0 + 25.0, y0, endX, y0);
 
     // Flat top edge to the right corner
     path.lineTo(width - cornerRadius, y0);
@@ -100,6 +89,7 @@ class NavbarBackgroundPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant NavbarBackgroundPainter oldDelegate) {
-    return oldDelegate.activeIndex != activeIndex || oldDelegate.itemCount != itemCount;
+    return oldDelegate.activeIndex != activeIndex ||
+        oldDelegate.itemCount != itemCount;
   }
 }

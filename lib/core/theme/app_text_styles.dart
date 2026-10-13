@@ -45,16 +45,16 @@ class AppTextStyles {
   );
 
   // 🔹 Size 19
-  static final TextStyle regular19 = GoogleFonts.poppins(
-    fontSize: 19,
+  static final TextStyle regular20 = GoogleFonts.poppins(
+    fontSize: 20,
     fontWeight: FontWeight.w400,
   );
-  static final TextStyle medium19 = GoogleFonts.poppins(
-    fontSize: 19,
+  static final TextStyle medium20 = GoogleFonts.poppins(
+    fontSize: 20,
     fontWeight: FontWeight.w500,
   );
-  static final TextStyle bold19 = GoogleFonts.poppins(
-    fontSize: 19,
+  static final TextStyle bold20 = GoogleFonts.poppins(
+    fontSize: 20,
     fontWeight: FontWeight.w700,
   );
 
@@ -87,58 +87,58 @@ class AppTextStyles {
   );
 
   // 🔹 Size 37
-  static final TextStyle regular37 = GoogleFonts.poppins(
-    fontSize: 37,
+  static final TextStyle regular36 = GoogleFonts.poppins(
+    fontSize: 36,
     fontWeight: FontWeight.w400,
   );
-  static final TextStyle medium37 = GoogleFonts.poppins(
-    fontSize: 37,
+  static final TextStyle medium36 = GoogleFonts.poppins(
+    fontSize: 36,
     fontWeight: FontWeight.w500,
   );
-  static final TextStyle bold37 = GoogleFonts.poppins(
-    fontSize: 37,
+  static final TextStyle bold36 = GoogleFonts.poppins(
+    fontSize: 36,
     fontWeight: FontWeight.w700,
   );
 
   // 🔹 Size 47
-  static final TextStyle regular47 = GoogleFonts.poppins(
-    fontSize: 47,
+  static final TextStyle regular48 = GoogleFonts.poppins(
+    fontSize: 48,
     fontWeight: FontWeight.w400,
   );
-  static final TextStyle medium47 = GoogleFonts.poppins(
-    fontSize: 47,
+  static final TextStyle medium48 = GoogleFonts.poppins(
+    fontSize: 48,
     fontWeight: FontWeight.w500,
   );
-  static final TextStyle bold47 = GoogleFonts.poppins(
-    fontSize: 47,
+  static final TextStyle bold48 = GoogleFonts.poppins(
+    fontSize: 48,
     fontWeight: FontWeight.w700,
   );
 
   // 🔹 Size 59
-  static final TextStyle regular59 = GoogleFonts.poppins(
-    fontSize: 59,
+  static final TextStyle regular60 = GoogleFonts.poppins(
+    fontSize: 60,
     fontWeight: FontWeight.w400,
   );
-  static final TextStyle medium59 = GoogleFonts.poppins(
-    fontSize: 59,
+  static final TextStyle medium60 = GoogleFonts.poppins(
+    fontSize: 60,
     fontWeight: FontWeight.w500,
   );
-  static final TextStyle bold59 = GoogleFonts.poppins(
-    fontSize: 59,
+  static final TextStyle bold60 = GoogleFonts.poppins(
+    fontSize: 60,
     fontWeight: FontWeight.w700,
   );
 
   // 🔹 Size 73
-  static final TextStyle regular73 = GoogleFonts.poppins(
-    fontSize: 73,
+  static final TextStyle regular72 = GoogleFonts.poppins(
+    fontSize: 72,
     fontWeight: FontWeight.w400,
   );
-  static final TextStyle medium73 = GoogleFonts.poppins(
-    fontSize: 73,
+  static final TextStyle medium72 = GoogleFonts.poppins(
+    fontSize: 72,
     fontWeight: FontWeight.w500,
   );
-  static final TextStyle bold73 = GoogleFonts.poppins(
-    fontSize: 73,
+  static final TextStyle bold72 = GoogleFonts.poppins(
+    fontSize: 72,
     fontWeight: FontWeight.w700,
   );
 }
