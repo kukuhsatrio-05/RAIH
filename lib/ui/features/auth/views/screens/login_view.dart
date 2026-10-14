@@ -1,329 +1,320 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:raih/core/theme/app_colors.dart';
 import 'package:raih/core/theme/app_text_styles.dart';
+import 'package:raih/ui/features/auth/viewmodels/login_vm.dart';
 
-// --- IMPORT REUSABLE WIDGETS ---
-import 'package:raih/core/widgets/universal_button.dart';
-import 'package:raih/core/widgets/universal_google_button.dart';
-import 'package:raih/core/widgets/universal_text_input.dart';
-import 'package:raih/ui/features/auth/viewmodels/login_viewmodel.dart';
-
-class LoginView extends ConsumerStatefulWidget {
+class LoginView extends ConsumerWidget {
   const LoginView({super.key});
 
   @override
-  ConsumerState<LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends ConsumerState<LoginView> {
-  late final TextEditingController emailController;
-  late final TextEditingController passwordController;
-
-  @override
-  void initState() {
-    super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-
-    emailController.addListener(_onTextChanged);
-    passwordController.addListener(_onTextChanged);
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  void _onTextChanged() {
-    ref
-        .read(loginViewModelProvider.notifier)
-        .validate(emailController.text, passwordController.text);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(loginViewModelProvider);
-    final notifier = ref.read(loginViewModelProvider.notifier);
-
-    // Listener Navigasi
-    ref.listen<LoginState>(loginViewModelProvider, (previous, next) {
-      if (next.user != null) {
-        context.go('/bank-materi');
-      }
-    });
-
-    final screenWidth = MediaQuery.of(context).size.width;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(loginProvider);
+    final notifier = ref.read(loginProvider.notifier);
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          // ===================================================================
-          // LAYER 1: BACKGROUND GRADIENT (Full Screen)
-          // ===================================================================
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: const BoxDecoration(gradient: AppColors.blueGradient),
-            child: Stack(
-              children: [
-                // Lingkaran Dekoratif Kiri Atas
-                Positioned(
-                  top: -40,
-                  left: -40,
-                  child: Container(
-                    width: 180,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withAlpha(25),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-                // Lingkaran Dekoratif Kanan Atas
-                Positioned(
-                  top: -20,
-                  right: -50,
-                  child: Container(
-                    width: 220,
-                    height: 220,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withAlpha(25),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-                // Tombol Back di Pojok Kiri Atas
-                // Tombol Back di Pojok Kiri Atas
-                Positioned(
-                  top: MediaQuery.of(context).padding.top - 20,
-                  left: 16,
-                  child: IconButton(
-                    onPressed: () {
-                      // kalau ingin selalu ke AuthOptionView
-                      context.go('/auth-option');
-
-                      // kalau ingin dinamis (balik ke halaman sebelumnya di stack)
-                      // context.pop();
-                    },
-                    icon: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(
-                          alpha: 0.3,
-                        ), // lebih konsisten daripada withAlpha
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 20,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // 1. Header Gradient Biru dengan Logo & Ilustrasi Atas
+            SizedBox(
+              height: screenHeight * 0.35,
+              width: double.infinity,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  // Latar Belakang Gradient
+                  Container(
+                    width: double.infinity,
+                    height: screenHeight * 0.32,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          AppColors.blueGradientStart,
+                          AppColors.blueGradientEnd,
+                        ],
                       ),
                     ),
+                    child: Stack(
+                      children: [
+                        // Bulatan Dekorasi Kanan Atas
+                        Positioned(
+                          top: -40,
+                          right: -40,
+                          child: Container(
+                            width: 180,
+                            height: 180,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withValues(alpha: 0.12),
+                            ),
+                          ),
+                        ),
+                        // Bulatan Dekorasi Kiri Bawah
+                        Positioned(
+                          bottom: -30,
+                          left: -30,
+                          child: Container(
+                            width: 140,
+                            height: 140,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withValues(alpha: 0.12),
+                            ),
+                          ),
+                        ),
+                        // Logo Raih
+                        SafeArea(
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 16.0),
+                              child: SvgPicture.asset(
+                                'assets/icons/raih.svg',
+                                height: 28,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
 
-          // ===================================================================
-          // LAYER 2: CONTAINER PUTIH STATIS (Ukuran & Shape Fixed)
-          // ===================================================================
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: screenWidth > 430
-                  ? 430
-                  : double
-                        .infinity, // Fixed W: 430 (atau selebar layar jika HP kecil)
-              height: 720, // Fixed H: 720
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), // Sudut atas 50
-                  topRight: Radius.circular(50), // Sudut atas 50
-                  bottomLeft: Radius.zero, // Sudut bawah 0
-                  bottomRight: Radius.zero, // Sudut bawah 0
-                ),
+                  // Gambar Ilustrasi Tengah (Menimpa perbatasan header)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'assets/images/login_illustration.svg',
+                        height: 130,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
 
-          // ===================================================================
-          // LAYER 3: WRAPPER KONTEN TRANSPARAN (Di Atas Container Putih)
-          // ===================================================================
-          SafeArea(
-            bottom: false,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Transform.translate(
-                offset: const Offset(0, -115),
-                child: SizedBox(
-                  width: screenWidth > 430 ? 430 : double.infinity,
-                  height: 730,
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+            // 2. Area Form Login
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 16),
+                  Text(
+                    'Selamat Datang!',
+                    style: AppTextStyles.bold24.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Tidak punya akun? ',
+                        style: AppTextStyles.regular14.copyWith(
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Navigasi ke halaman Daftar
+                        },
+                        child: Text(
+                          'Daftar',
+                          style: AppTextStyles.semibold14.copyWith(
+                            color: AppColors.blueGradientEnd,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Input Email (Border biru jika terisi)
+                  TextFormField(
+                    onChanged: notifier.setEmail,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: TextStyle(
+                        color: state.isEmailNotEmpty
+                            ? AppColors.blueGradientEnd
+                            : Colors.grey.shade500,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 16,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide(
+                          color: state.isEmailNotEmpty
+                              ? AppColors.blueGradientEnd
+                              : Colors.grey.shade300,
+                          width: 1.5,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: const BorderSide(
+                          color: AppColors.blueGradientEnd,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Input Kata Sandi (Border biru jika terisi)
+                  TextFormField(
+                    onChanged: notifier.setPassword,
+                    obscureText: !state.isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'Kata Sandi',
+                      labelStyle: TextStyle(
+                        color: state.isPasswordNotEmpty
+                            ? AppColors.blueGradientEnd
+                            : Colors.grey.shade500,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 16,
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          state.isPasswordVisible
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                          color: Colors.grey,
+                        ),
+                        onPressed: notifier.togglePasswordVisibility,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide(
+                          color: state.isPasswordNotEmpty
+                              ? AppColors.blueGradientEnd
+                              : Colors.grey.shade300,
+                          width: 1.5,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: const BorderSide(
+                          color: AppColors.blueGradientEnd,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Lupa Kata Sandi
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      onPressed: () {
+                        // Navigasi ke Lupa Kata Sandi
+                      },
+                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                      child: Text(
+                        'Lupa Kata Sandi?',
+                        style: AppTextStyles.regular14.copyWith(
+                          color: AppColors.blueGradientEnd,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Tombol 'Masuk' (Warna dinamis abu-abu -> biru)
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: state.isFormValid
+                            ? AppColors.blueGradientEnd
+                            : const Color(0xFFC4C4C4),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(26),
+                        ),
+                      ),
+                      onPressed: state.isFormValid && !state.isLoading
+                          ? notifier.submitLogin
+                          : null,
+                      child: state.isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text(
+                              'Masuk',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+
+                  // Tombol Masuk dengan Google
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Colors.grey.shade300),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(26),
+                        ),
+                      ),
+                      onPressed: () {
+                        // Aksi Login Google
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 28),
-
-                          // 1. Logo Raih (Kombinasi Icon & Teks)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/icons/logo_raih_dark.png',
-                                height: 20,
-                                errorBuilder: (ctx, err, stack) => const Icon(
-                                  Icons.auto_awesome,
-                                  color: AppColors.blueNormal,
-                                  size: 24,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Raih',
-                                style: AppTextStyles.medium16.copyWith(
-                                  color: AppColors.blackNormal,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-
-                          // 2. Gambar auth_top.png
-                          Image.asset(
-                            'assets/images/auth_top.png',
-                            height: 110,
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Icon(
-                                  Icons.lock_person_rounded,
-                                  size: 70,
-                                  color: AppColors.blueNormal,
-                                ),
-                          ),
-                          const SizedBox(height: 12),
-
-                          // 3. Judul "Selamat Datang!"
                           Text(
-                            'Selamat Datang!',
-                            style: AppTextStyles.bold24.copyWith(
+                            'Masuk dengan akun Google',
+                            style: AppTextStyles.regular14.copyWith(
                               color: Colors.black,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 6),
-
-                          // 4. Subtitle "Tidak punya akun? Daftar"
-                          RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              text: 'Tidak punya akun? ',
-                              style: AppTextStyles.regular14.copyWith(
-                                color: AppColors.blackNormal,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: 'Daftar',
-                                  style: AppTextStyles.bold14.copyWith(
-                                    color: AppColors.blueNormal,
-                                  ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () => context.push('/register'),
-                                ),
-                              ],
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(height: 28),
-
-                          // 5. Custom Form TextFields
-                          CustomTextField(
-                            label: 'Email',
-                            controller: emailController,
+                          const SizedBox(width: 12),
+                          SvgPicture.asset(
+                            'assets/icons/google.svg',
+                            height: 20,
                           ),
-                          const SizedBox(height: 16),
-
-                          CustomTextField(
-                            label: 'Kata Sandi',
-                            isPassword: true,
-                            isObscure: !state.isPasswordVisible,
-                            controller: passwordController,
-                            onTogglePassword: notifier.togglePasswordVisibility,
-                          ),
-                          const SizedBox(height: 10),
-
-                          // 6. Link "Lupa Kata Sandi?"
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: InkWell(
-                              onTap: () => context.push('/forgot-password'),
-                              child: Text(
-                                'Lupa Kata Sandi?',
-                                style: AppTextStyles.regular14.copyWith(
-                                  color: AppColors.blueNormal,
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          // Pesan Error
-                          if (state.errorMessage != null) ...[
-                            const SizedBox(height: 10),
-                            Text(
-                              state.errorMessage!,
-                              style: AppTextStyles.regular12.copyWith(
-                                color: Colors.red,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-
-                          const SizedBox(
-                            height: 40,
-                          ), // Diubah dari 60 menjadi 40 agar lebih efisien space
-                          // 7. Tombol Masuk
-                          state.isLoading
-                              ? const Center(child: CircularProgressIndicator())
-                              : UniversalButton(
-                                  text: 'Masuk',
-                                  variant: state.isButtonEnabled
-                                      ? ButtonVariant.primary
-                                      : ButtonVariant.disabled,
-                                  onPressed: state.isButtonEnabled
-                                      ? () => notifier.login(
-                                          emailController.text,
-                                          passwordController.text,
-                                        )
-                                      : null,
-                                ),
-
-                          const SizedBox(
-                            height: 40,
-                          ), // Diubah dari 100 menjadi 40 agar tidak memicu overflow di layar HP sedang
-                          // 8. Tombol Google Auth
-                          GoogleAuthButton(
-                            onPressed: () => notifier.loginWithGoogle(),
-                          ),
-                          const SizedBox(height: 24),
                         ],
                       ),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 24),
+                ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

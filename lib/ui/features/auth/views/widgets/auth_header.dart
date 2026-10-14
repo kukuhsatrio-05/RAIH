@@ -38,7 +38,7 @@ class AuthHeader extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               'Raih',
-              style: AppTextStyles.medium20.copyWith(
+              style: AppTextStyles.medium24.copyWith(
                 color: AppColors.blackNormal,
               ),
             ),

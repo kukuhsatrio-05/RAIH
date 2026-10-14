@@ -42,6 +42,7 @@ dependencies:
   google_sign_in: ^7.2.0
   intl: ^0.20.2
   flutter_svg: ^2.3.0
+  flutter_dotenv: ^6.0.1
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - api.env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -81,27 +83,22 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/icons/logo_raih_noBg.svg
+  image: assets/icons/logo_raih_gabung.svg
   android_12:
     color: "#ffffff"
-    image: assets/icons/logo_raih_noBg.svg
+    image: assets/icons/logo_raih_gabung.svg
     android_gravity: center
     ios_content_mode: scaleAspectFit
     fullscreen: true
@@ -112,4 +109,4 @@ flutter_launcher_icons:
   image_path: "assets/images/logo_raih_original.png"
   adaptive_icon_background: "#FFFFFF"
   adaptive_icon_foreground: "assets/images/logo_raih_original.png"
-  adaptive_icon_foreground_scale: 0.6
+  adaptive_icon_foreground_scale: 0.9

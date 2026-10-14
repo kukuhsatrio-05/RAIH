@@ -192,7 +192,7 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
                               Text(
                                 item.title,
                                 textAlign: TextAlign.center,
-                                style: AppTextStyles.bold20.copyWith(
+                                style: AppTextStyles.bold24.copyWith(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   height: 1.2,

@@ -252,7 +252,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                         // 1. Judul "Daftar"
                         Text(
                           'Daftar',
-                          style: AppTextStyles.bold36.copyWith(
+                          style: AppTextStyles.bold40.copyWith(
                             color: Colors.black,
                           ),
                           textAlign: TextAlign.left,
@@ -339,7 +339,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                           const SizedBox(height: 12),
                           Text(
                             state.errorMessage!,
-                            style: AppTextStyles.regular12.copyWith(
+                            style: AppTextStyles.regular14.copyWith(
                               color: Colors.red,
                             ),
                             textAlign: TextAlign.center,

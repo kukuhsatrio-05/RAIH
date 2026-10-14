@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:raih/ui/features/onboarding/views/onboarding_view.dart';
+import 'package:raih/ui/features/auth/views/screens/login_view.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:raih/app/config/router.dart';
 import 'package:raih/core/theme/app_theme.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: "api.env");
   await Supabase.initialize(
-    url: 'https://hrqpqfplzkifqlebbuvc.supabase.co',
-    publishableKey: 'sb_publishable_fSNUHJj7pVE_MLSPS4S0vA_z6-tb0HH',
+    url: dotenv.env['SUPABASE_URL'] ?? '',
+    publishableKey: dotenv.env['SUPABASE_KEY'] ?? '',
   );
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // routerConfig: AppRouter.router,
       theme: AppTheme.lightTheme,
-      home: OnboardingView(),
+      home: LoginView(),
     );
   }
 }
