@@ -1,386 +1,484 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:raih/core/theme/app_colors.dart';
 import 'package:raih/core/theme/app_text_styles.dart';
+import 'package:raih/ui/features/auth/viewmodels/register_vm.dart';
 
-// --- IMPORT REUSABLE WIDGETS ---
-import 'package:raih/core/widgets/universal_button.dart';
-import 'package:raih/core/widgets/universal_google_button.dart';
-import 'package:raih/core/widgets/universal_text_input.dart';
-import 'package:raih/ui/features/auth/viewmodels/register_viewmodel.dart';
-
-class RegisterView extends ConsumerStatefulWidget {
+class RegisterView extends ConsumerWidget {
   const RegisterView({super.key});
 
   @override
-  ConsumerState<RegisterView> createState() => _RegisterViewState();
-}
-
-class _RegisterViewState extends ConsumerState<RegisterView> {
-  late final TextEditingController namaLengkapController;
-  late final TextEditingController emailController;
-  late final TextEditingController noAktifController;
-  late final TextEditingController passwordController;
-  late final TextEditingController confirmPasswordController;
-
-  @override
-  void initState() {
-    super.initState();
-    namaLengkapController = TextEditingController();
-    emailController = TextEditingController();
-    noAktifController = TextEditingController();
-    passwordController = TextEditingController();
-    confirmPasswordController = TextEditingController();
-
-    namaLengkapController.addListener(_onTextChanged);
-    emailController.addListener(_onTextChanged);
-    noAktifController.addListener(_onTextChanged);
-    passwordController.addListener(_onTextChanged);
-    confirmPasswordController.addListener(_onTextChanged);
-  }
-
-  @override
-  void dispose() {
-    namaLengkapController.dispose();
-    emailController.dispose();
-    noAktifController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    super.dispose();
-  }
-
-  void _onTextChanged() {
-    ref
-        .read(registerViewModelProvider.notifier)
-        .validate(
-          namaLengkapController.text,
-          emailController.text,
-          noAktifController.text,
-          passwordController.text,
-          confirmPasswordController.text,
-        );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(registerViewModelProvider);
-    final notifier = ref.read(registerViewModelProvider.notifier);
-
-    ref.listen<RegisterState>(registerViewModelProvider, (previous, next) {
-      if (next.user != null) {
-        context.go('/bank-materi');
-      }
-    });
-
-    final screenWidth = MediaQuery.of(context).size.width;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(registerProvider);
+    final notifier = ref.read(registerProvider.notifier);
+    final screenHeight = MediaQuery.of(context).size.height;
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          // ===================================================================
-          // LAYER 1: BACKGROUND GRADIENT (Full Screen)
-          // ===================================================================
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: const BoxDecoration(gradient: AppColors.blueGradient),
-            child: Stack(
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        top: false,
+        child: Container(
+          color: Colors.white,
+          child: AnimatedPadding(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeOutCubic,
+            padding: EdgeInsets.only(bottom: keyboardHeight),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              physics: const BouncingScrollPhysics(),
               children: [
-                Positioned(
-                  top: -40,
-                  left: -40,
-                  child: Container(
-                    width: 180,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withAlpha(25),
-                      shape: BoxShape.circle,
-                    ),
+                // 1. Header Gradient & Ilustrasi
+                SizedBox(
+                  height: screenHeight * 0.36,
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: screenHeight * 0.30,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              AppColors.blueGradientStart,
+                              AppColors.blueGradientEnd,
+                            ],
+                          ),
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: -40,
+                              right: -40,
+                              child: Container(
+                                width: 180,
+                                height: 180,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white.withValues(alpha: 0.12),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: -30,
+                              left: -30,
+                              child: Container(
+                                width: 140,
+                                height: 140,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white.withValues(alpha: 0.12),
+                                ),
+                              ),
+                            ),
+                            SafeArea(
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 16.0),
+                                  child: SvgPicture.asset(
+                                    'assets/icons/raih.svg',
+                                    height: 28,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        top: screenHeight * 0.26,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(32),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: screenHeight * 0.26 - 65,
+                        left: 0,
+                        right: 0,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            'assets/icons/register_illustration.svg',
+                            height: 130,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Positioned(
-                  top: -20,
-                  right: -50,
-                  child: Container(
-                    width: 220,
-                    height: 220,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withAlpha(25),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: MediaQuery.of(context).padding.top - 20,
-                  left: 16,
-                  child: IconButton(
-                    onPressed: () => context.go('/auth-option'),
-                    icon: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.3),
-                        shape: BoxShape.circle,
+
+                // 2. Area Form Pendaftaran
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Daftar',
+                        style: AppTextStyles.bold24.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 20,
+                      const SizedBox(height: 6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Anda telah memiliki akun? ',
+                            style: AppTextStyles.regular14.copyWith(
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // Navigasi ke Halaman Login
+                            },
+                            child: Text(
+                              'Masuk',
+                              style: AppTextStyles.semibold14.copyWith(
+                                color: AppColors.blueGradientEnd,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                      const SizedBox(height: 24),
+
+                      // Field 1: Nama Lengkap
+                      _buildTextField(
+                        label: 'Nama Lengkap',
+                        isFilled: state.fullName.isNotEmpty,
+                        onChanged: notifier.setFullName,
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Field 2: Email
+                      _buildTextField(
+                        label: 'Email',
+                        isFilled: state.email.isNotEmpty,
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: notifier.setEmail,
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Field 3: No Aktif
+                      _buildTextField(
+                        label: 'No Aktif',
+                        isFilled: state.phoneNumber.isNotEmpty,
+                        keyboardType: TextInputType.phone,
+                        onChanged: notifier.setPhoneNumber,
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Field 4: Instansi (Autocomplete + Input Bebas)
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Autocomplete<String>(
+                            initialValue: TextEditingValue(
+                              text: state.selectedInstitution ?? '',
+                            ),
+                            optionsBuilder:
+                                (TextEditingValue textEditingValue) {
+                                  if (textEditingValue.text.isEmpty) {
+                                    return const Iterable<String>.empty();
+                                  }
+                                  return notifier.institutions.where((
+                                    String option,
+                                  ) {
+                                    return option.toLowerCase().contains(
+                                      textEditingValue.text.toLowerCase(),
+                                    );
+                                  });
+                                },
+                            onSelected: (String selection) {
+                              notifier.setInstitution(selection);
+                            },
+                            fieldViewBuilder:
+                                (
+                                  context,
+                                  controller,
+                                  focusNode,
+                                  onFieldSubmitted,
+                                ) {
+                                  return TextFormField(
+                                    controller: controller,
+                                    focusNode: focusNode,
+                                    onChanged: notifier.setInstitution,
+                                    decoration: InputDecoration(
+                                      labelText: 'Instansi',
+                                      labelStyle: TextStyle(
+                                        color:
+                                            (state.selectedInstitution !=
+                                                    null &&
+                                                state
+                                                    .selectedInstitution!
+                                                    .isNotEmpty)
+                                            ? AppColors.blueGradientEnd
+                                            : Colors.grey.shade500,
+                                      ),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            horizontal: 20,
+                                            vertical: 16,
+                                          ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                        borderSide: BorderSide(
+                                          color:
+                                              (state.selectedInstitution !=
+                                                      null &&
+                                                  state
+                                                      .selectedInstitution!
+                                                      .isNotEmpty)
+                                              ? AppColors.blueGradientEnd
+                                              : Colors.grey.shade300,
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                        borderSide: const BorderSide(
+                                          color: AppColors.blueGradientEnd,
+                                          width: 1.5,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                            optionsViewBuilder: (context, onSelected, options) {
+                              return Align(
+                                alignment: Alignment.topLeft,
+                                child: Material(
+                                  elevation: 4,
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Container(
+                                    width: constraints.maxWidth,
+                                    constraints: const BoxConstraints(
+                                      maxHeight: 200,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      itemCount: options.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                            final String option = options
+                                                .elementAt(index);
+                                            return ListTile(
+                                              title: Text(
+                                                option,
+                                                style: AppTextStyles.regular14,
+                                              ),
+                                              onTap: () => onSelected(option),
+                                            );
+                                          },
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Field 5: Kata Sandi
+                      _buildTextField(
+                        label: 'Kata Sandi',
+                        isFilled: state.password.isNotEmpty,
+                        obscureText: !state.isPasswordVisible,
+                        onChanged: notifier.setPassword,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            state.isPasswordVisible
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: Colors.grey,
+                          ),
+                          onPressed: notifier.togglePasswordVisibility,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Field 6: Ulangi Kata Sandi
+                      _buildTextField(
+                        label: 'Ulangi Kata Sandi',
+                        isFilled: state.confirmPassword.isNotEmpty,
+                        obscureText: !state.isConfirmPasswordVisible,
+                        onChanged: notifier.setConfirmPassword,
+                        isError: !state.isPasswordMatch,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            state.isConfirmPasswordVisible
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: Colors.grey,
+                          ),
+                          onPressed: notifier.toggleConfirmPasswordVisibility,
+                        ),
+                      ),
+
+                      // Peringatan jika kata sandi belum sama
+                      if (!state.isPasswordMatch)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0, left: 4.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Kata sandi belum sama',
+                              style: TextStyle(
+                                color: Colors.red.shade600,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 28),
+
+                      // Tombol 'Daftar'
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: state.isFormValid
+                                ? AppColors.blueGradientEnd
+                                : const Color(0xFFC4C4C4),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(26),
+                            ),
+                          ),
+                          onPressed: state.isFormValid && !state.isLoading
+                              ? notifier.submitRegister
+                              : null,
+                          child: state.isLoading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text(
+                                  'Daftar',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Tombol Daftar dengan Google
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Colors.grey.shade300),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(26),
+                            ),
+                          ),
+                          onPressed: () {
+                            // Aksi Register Google
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Daftar dengan akun Google',
+                                style: AppTextStyles.regular14.copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              SvgPicture.asset(
+                                'assets/icons/google.svg',
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
 
-          // ===================================================================
-          // LAYER 2: CONTAINER PUTIH STATIS
-          // ===================================================================
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: screenWidth > 430 ? 430 : double.infinity,
-              height: 776,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                  bottomLeft: Radius.zero,
-                  bottomRight: Radius.zero,
-                ),
-              ),
-            ),
+  // Reusable TextField Builder untuk kemudahan penambahan kolom baru
+  Widget _buildTextField({
+    required String label,
+    required bool isFilled,
+    required ValueChanged<String> onChanged,
+    bool obscureText = false,
+    bool isError = false,
+    TextInputType? keyboardType,
+    Widget? suffixIcon,
+  }) {
+    return TextFormField(
+      onChanged: onChanged,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+          color: isError
+              ? Colors.red
+              : (isFilled ? AppColors.blueGradientEnd : Colors.grey.shade500),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
+        suffixIcon: suffixIcon,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(
+            color: isError
+                ? Colors.red
+                : (isFilled ? AppColors.blueGradientEnd : Colors.grey.shade300),
+            width: 1.5,
           ),
-
-          // ===================================================================
-          // LAYER 3: HEADER STATIS (LOGO RAIH DI ATAS GAMBAR REGIS_TOP)
-          // ===================================================================
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Transform.translate(
-              offset: const Offset(0, -705), // Geser seluruh grup header ini
-              child: SizedBox(
-                width: screenWidth > 430 ? 430 : double.infinity,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // ---------------------------------------------------------
-                    // 1. LOGO & TEKS RAIH (Berada di Atas Gambar)
-                    // ---------------------------------------------------------
-                    // Bebas kamu geser dengan Offset(X, Y) jika ingin kustomisasi posisinya
-                    Transform.translate(
-                      offset: const Offset(
-                        0,
-                        40,
-                      ), // <-- ATUR POSISI LOGO DI SINI (Contoh: Offset(0, -10))
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/icons/logo_raih_dark.png',
-                            height: 20,
-                            errorBuilder: (ctx, err, stack) => const Icon(
-                              Icons.auto_awesome,
-                              color: AppColors.blueNormal,
-                              size: 24,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Raih',
-                            style: AppTextStyles.medium16.copyWith(
-                              color: AppColors.blackNormal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    // Jarak antara Logo Raih dan Gambar Regis Top (bisa disesuaikan)
-                    const SizedBox(height: 12),
-
-                    // ---------------------------------------------------------
-                    // 2. GAMBAR REGIS_TOP.PNG (Berada di Bawah Logo)
-                    // ---------------------------------------------------------
-                    Transform.translate(
-                      offset: const Offset(
-                        0,
-                        0,
-                      ), // <-- ATUR POSISI GAMBAR DI SINI jika perlu
-                      child: Image.asset(
-                        'assets/images/regis_top.png',
-                        height: 150,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(
-                              Icons.person_add_rounded,
-                              size: 70,
-                              color: AppColors.blueNormal,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(
+            color: isError ? Colors.red : AppColors.blueGradientEnd,
+            width: 1.5,
           ),
-
-          // ===================================================================
-          // LAYER 4: WRAPPER FORM & JUDUL (DAPAT DI-SCROLL)
-          // ===================================================================
-          SafeArea(
-            bottom: false,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: screenWidth > 430 ? 430 : double.infinity,
-                height: 760, // Tinggi area scroll di bawah header statis
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(height: 8),
-
-                        // 1. Judul "Daftar"
-                        Text(
-                          'Daftar',
-                          style: AppTextStyles.bold40.copyWith(
-                            color: Colors.black,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        // 2. Subtitle "Sudah punya akun? Masuk"
-                        RichText(
-                          textAlign: TextAlign.left,
-                          text: TextSpan(
-                            text: 'Anda telah memiliki akun?',
-                            style: AppTextStyles.regular14.copyWith(
-                              color: AppColors.blackNormal,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: 'Masuk',
-                                style: AppTextStyles.bold14.copyWith(
-                                  color: AppColors.blueNormal,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => context.push('/login'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-
-                        // 3. Custom Form TextFields
-                        CustomTextField(
-                          label: 'Nama Lengkap',
-                          controller: namaLengkapController,
-                        ),
-                        const SizedBox(height: 16),
-
-                        CustomTextField(
-                          label: 'Email',
-                          controller: emailController,
-                        ),
-                        const SizedBox(height: 16),
-
-                        CustomTextField(
-                          label: 'Nomor Aktif',
-                          controller: noAktifController,
-                        ),
-                        const SizedBox(height: 16),
-
-                        CustomTextField(
-                          label: 'Fakultas',
-                          isDropdown: true,
-                          selectedValue: state.selectedFakultas,
-                          dropdownItems: notifier.fakultasList,
-                          onDropdownChanged: (value) {
-                            notifier.setFakultas(
-                              value,
-                              namaLengkapController.text,
-                              emailController.text,
-                              noAktifController.text,
-                              passwordController.text,
-                              confirmPasswordController.text,
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 16),
-
-                        CustomTextField(
-                          label: 'Kata Sandi',
-                          controller: passwordController,
-                          isPassword: true,
-                          isObscure: !state.isPasswordVisible,
-                          onTogglePassword: notifier.togglePasswordVisibility,
-                        ),
-                        const SizedBox(height: 16),
-
-                        CustomTextField(
-                          label: 'Konfirmasi Kata Sandi',
-                          controller: confirmPasswordController,
-                          isPassword: true,
-                          isObscure: !state.isConfirmPasswordVisible,
-                          onTogglePassword:
-                              notifier.toggleConfirmPasswordVisibility,
-                        ),
-
-                        // Pesan Error jika ada
-                        if (state.errorMessage != null) ...[
-                          const SizedBox(height: 12),
-                          Text(
-                            state.errorMessage!,
-                            style: AppTextStyles.regular14.copyWith(
-                              color: Colors.red,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-
-                        const SizedBox(height: 32),
-
-                        // 4. Tombol Daftar
-                        state.isLoading
-                            ? const Center(child: CircularProgressIndicator())
-                            : UniversalButton(
-                                text: 'Daftar',
-                                variant: state.isButtonEnabled
-                                    ? ButtonVariant.primary
-                                    : ButtonVariant.disabled,
-                                onPressed: state.isButtonEnabled
-                                    ? () => notifier.register(
-                                        name: namaLengkapController.text,
-                                        email: emailController.text,
-                                        phone: noAktifController.text,
-                                        password: passwordController.text,
-                                      )
-                                    : null,
-                              ),
-
-                        const SizedBox(height: 20),
-
-                        // 5. Tombol Google Auth
-                        GoogleAuthButton(
-                          onPressed: () => notifier.registerWithGoogle(),
-                        ),
-                        const SizedBox(height: 24),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
