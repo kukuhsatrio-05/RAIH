@@ -208,8 +208,7 @@ class MadingView extends ConsumerWidget {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio:
-                                0.58, // Mengatur rasio tinggi-lebar card
+                            mainAxisExtent: 370,
                             crossAxisSpacing: 14,
                             mainAxisSpacing: 16,
                           ),

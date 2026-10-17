@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:raih/ui/features/auth/views/screens/register_view.dart';
+import 'package:raih/ui/features/mading/views/mading_views.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:raih/app/config/router.dart';
 import 'package:raih/core/theme/app_theme.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // routerConfig: AppRouter.router,
       theme: AppTheme.lightTheme,
-      home: RegisterView(),
+      home: MadingView(),
     );
   }
 }

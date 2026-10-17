@@ -142,7 +142,39 @@ class MadingCard extends StatelessWidget {
                     ],
                   ),
 
-                  const Spacer(),
+                  const SizedBox(height: 8),
+
+                  // Deskripsi: mengisi sisa ruang di antara lokasi dan tombol deadline
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        const double fontSize = 10;
+                        const double lineHeight = 1.4;
+
+                        // Hitung berapa baris yang muat di sisa ruang
+                        final maxLines =
+                            (constraints.maxHeight / (fontSize * lineHeight))
+                                .floor();
+
+                        if (item.description.isEmpty || maxLines < 1) {
+                          return const SizedBox.shrink();
+                        }
+
+                        return Text(
+                          item.description,
+                          maxLines: maxLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: fontSize,
+                            height: lineHeight,
+                            color: Colors.grey.shade600,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
 
                   // Badge Deadline Responsif
                   Container(
