@@ -106,7 +106,7 @@ flutter_native_splash:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/logo_raih_original.png"
+  image_path: "assets/images/logo_raih_4x.png"
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/images/logo_raih_original.png"
-  adaptive_icon_foreground_scale: 0.9
+  adaptive_icon_foreground: "assets/images/logo_raih_4x.png"
+  adaptive_icon_foreground_scale: 1.2

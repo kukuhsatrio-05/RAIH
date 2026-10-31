@@ -40,6 +40,17 @@ class AppColors {
   // 🟣 Purple Palette
   static const Color purpleNormal = Color(0xFF6C3FB5);
 
+  // 🟢 Green Palette (Benefit / Success)
+  static const Color greenLight = Color(0xFFE8FDF2);
+  static const Color greenBorder = Color(0xFF34D399);
+  static const Color greenNormal = Color(0xFF10B981);
+  static const Color greenDark = Color(0xFF047857);
+
+  // 🔴 Red Palette (Deadline / Warning)
+  static const Color redLight = Color(0xFFFFF1F2);
+  static const Color redNormal = Color(0xFFF43F5E);
+  static const Color redDark = Color(0xFFBE123C);
+
   // 🔵 Blue Gradient
   static const Color blueGradientStart = Color(0xFF4F7CF3);
   static const Color blueGradientEnd = Color(0xFF6FA8FF);

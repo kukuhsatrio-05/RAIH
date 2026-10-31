@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:raih/core/theme/app_colors.dart';
 import 'package:raih/core/theme/app_text_styles.dart';
 import 'package:raih/ui/features/mading/viewmodels/mading_vm.dart';
-import 'package:raih/ui/features/mading/models/mading_models.dart';
-import 'package:raih/ui/features/mading/views/mading_card.dart';
+import 'package:raih/ui/features/mading/views/mading_details_views.dart';
+import 'package:raih/ui/features/mading/views/widgets/mading_card.dart';
 
 class MadingView extends ConsumerWidget {
   const MadingView({super.key});
@@ -203,7 +203,17 @@ class MadingView extends ConsumerWidget {
                     sliver: SliverGrid(
                       delegate: SliverChildBuilderDelegate((context, index) {
                         final item = filteredItems[index];
-                        return MadingCard(item: item);
+                        return MadingCard(
+                          item: item,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MadingDetailView(postId: item.id),
+                              ),
+                            );
+                          },
+                        );
                       }, childCount: filteredItems.length),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
