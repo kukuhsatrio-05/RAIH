@@ -2,19 +2,19 @@
 // import 'package:go_router/go_router.dart';
 // import 'package:supabase_flutter/supabase_flutter.dart';
 
-// import 'package:raih/ui/features/onboarding/views/onboarding_view.dart';
-// import 'package:raih/ui/features/auth/views/screens/auth_option_view.dart';
-// import 'package:raih/ui/features/auth/views/screens/login_view.dart';
-// import 'package:raih/ui/features/auth/views/screens/register_view.dart';
-// import 'package:raih/ui/features/home/views/home_views.dart';
-// import 'package:raih/ui/features/mading/mading_views.dart';
-// import 'package:raih/ui/features/materi/materi_views.dart';
-// import 'package:raih/ui/features/profile/profile_views.dart';
-// import 'package:raih/ui/features/upload/upload_views.dart';
-// import 'package:raih/ui/features/home/views/event_detail_view.dart';
+// import 'package:raih/features/onboarding/presentation/onboarding_screen.dart';
+// import 'package:raih/features/auth/presentation/auth_screen.dart';
+// import 'package:raih/features/auth/presentation/login_screen.dart';
+// import 'package:raih/features/auth/presentation/register_screen.dart';
+// import 'package:raih/features/home/presentation/home_screen.dart';
+// import 'package:raih/features/mading/presentation/mading_screen.dart';
+// import 'package:raih/features/materi/presentation/materi_screen.dart';
+// import 'package:raih/features/profile/presentation/profile_screen.dart';
+// import 'package:raih/features/upload/presentation/upload_screen.dart';
+// import 'package:raih/features/home/presentation/event_detail_screen.dart';
 // import 'package:raih/ui/layouts/navbar_layout.dart';
-// import 'package:raih/ui/features/bank_materi/views/screens/material_screen.dart';
-// import 'package:raih/ui/features/bank_materi/views/screens/document_detail_view.dart';
+// import 'package:raih/features/bank_materi/presentation/bank_materi_screen.dart';
+// import 'package:raih/features/bank_materi/presentation/document_detail_screen.dart';
 
 // class AppRouter {
 //   // Route yang hanya boleh diakses saat belum login

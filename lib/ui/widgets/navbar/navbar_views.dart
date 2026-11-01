@@ -2,7 +2,7 @@
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:go_router/go_router.dart';
 // import 'package:raih/model/navbar_item_models.dart';
-// import 'package:raih/ui/features/providers/view_models/navbar_providers.dart';
+// import 'package:raih/core/providers/navbar_provider.dart';
 // import 'package:raih/core/constants/const.dart';
 
 // class CustomBottomNavbar extends ConsumerWidget {

@@ -1,19 +1,17 @@
-// import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:raih/ui/features/mading/views/mading_details_views.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:raih/app/config/router.dart';
-import 'package:raih/core/theme/app_theme.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:raih/core/constants/env_constants.dart';
+import 'package:raih/core/theme/app_theme.dart';
+import 'package:raih/features/mading/presentation/mading_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "api.env");
   await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL'] ?? '',
-    publishableKey: dotenv.env['SUPABASE_KEY'] ?? '',
+    url: EnvConstants.supabaseUrl,
+    publishableKey: EnvConstants.supabasePublishableKey,
   );
   runApp(const ProviderScope(child: MyApp()));
 }
