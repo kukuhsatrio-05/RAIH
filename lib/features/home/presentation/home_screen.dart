@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:raih/features/home/presentation/home_controller.dart';
 import 'package:raih/features/home/presentation/widgets/event_card.dart';
+import 'package:raih/core/widgets/empty_state_view.dart';
+import 'package:raih/core/widgets/skeleton_loading.dart';
 
 export 'event_detail_screen.dart';
 export 'home_auth_view.dart';
@@ -156,29 +158,46 @@ class _HomeViewsState extends ConsumerState<HomeViews> {
             ),
 
             // ---- Grid ----
-            events.isEmpty
-                ? const SliverFillRemaining(
-                    child: Center(child: Text('Tidak ada hasil.')),
-                  )
-                : SliverPadding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
-                    sliver: SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 0.62,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, i) => EventCard(
-                          event: events[i],
-                          onTap: () => context.go('/detail/${events[i].id}'),
-                        ),
-                        childCount: events.length,
-                      ),
-                    ),
+            if (state.isLoading)
+              SliverFillRemaining(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                  child: SkeletonGrid(
+                    itemCount: 6,
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.62,
                   ),
+                ),
+              )
+            else if (events.isEmpty)
+              SliverFillRemaining(
+                child: EmptyStateView(
+                  title: 'Tidak ada hasil',
+                  subtitle: 'Coba ubah filter atau cari dengan kata kunci lain',
+                  icon: Icons.search_off_outlined,
+                  onRetry: () => vm.loadEvents(),
+                ),
+              )
+            else
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                sliver: SliverGrid(
+                  gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 0.62,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, i) => EventCard(
+                      event: events[i],
+                      onTap: () => context.go('/detail/${events[i].id}'),
+                    ),
+                    childCount: events.length,
+                  ),
+                ),
+              ),
           ],
         ),
       ),

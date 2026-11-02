@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:raih/features/bank_materi/presentation/widgets/detail_header_card.dart';
 import 'package:raih/features/bank_materi/presentation/widgets/detail_rating_section.dart';
 import 'package:raih/features/bank_materi/presentation/widgets/detail_header_background.dart';
@@ -108,7 +109,7 @@ class _DocumentDetailViewState extends ConsumerState<DocumentDetailView> {
           backgroundColor: Colors.black.withValues(alpha:0.15),
           child: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.go('/bank-materi'),
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:raih/core/theme/app_colors.dart';
 import 'package:raih/core/theme/app_text_styles.dart';
 import 'package:raih/features/mading/presentation/mading_controller.dart';
@@ -268,7 +269,17 @@ class _MadingDetailViewState extends State<MadingDetailView> {
                         ),
                         child: Row(
                           children: [
-                            const SizedBox(width: 56), // Tempat tombol back
+                            // Back button di collapsed AppBar
+                            Opacity(
+                              opacity: topBarOpacity,
+                              child: IconButton(
+                                onPressed: () => context.go('/mading'),
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  color: AppColors.blackNormal,
+                                ),
+                              ),
+                            ),
                             Expanded(
                               child: Text(
                                 mading.title,
@@ -294,7 +305,7 @@ class _MadingDetailViewState extends State<MadingDetailView> {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () => Navigator.pop(context),
+                      onTap: () => context.go('/mading'),
                       borderRadius: BorderRadius.circular(20),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),

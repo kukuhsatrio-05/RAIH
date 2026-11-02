@@ -1,10 +1,12 @@
 export 'mading_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:raih/core/theme/app_colors.dart';
 import 'package:raih/core/theme/app_text_styles.dart';
+import 'package:raih/core/widgets/empty_state_view.dart';
+import 'package:raih/core/widgets/skeleton_loading.dart';
 import 'package:raih/features/mading/presentation/mading_controller.dart';
-import 'package:raih/features/mading/presentation/mading_details_screen.dart';
 import 'package:raih/features/mading/presentation/widgets/mading_card.dart';
 
 typedef MadingScreen = MadingView;
@@ -197,36 +199,48 @@ class MadingView extends ConsumerWidget {
             const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
             // 3. Grid Items (Lazy Render via SliverGrid)
-            filteredItems.isEmpty
-                ? const SliverFillRemaining(
-                    child: Center(child: Text('Tidak ada data ditemukan')),
-                  )
-                : SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    sliver: SliverGrid(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        final item = filteredItems[index];
-                        return MadingCard(
-                          item: item,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => MadingDetailView(postId: item.id),
-                              ),
-                            );
-                          },
-                        );
-                      }, childCount: filteredItems.length),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisExtent: 370,
-                            crossAxisSpacing: 14,
-                            mainAxisSpacing: 16,
-                          ),
-                    ),
+            if (state.isLoading)
+              SliverFillRemaining(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SkeletonGrid(
+                    itemCount: 6,
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.75,
                   ),
+                ),
+              )
+            else if (filteredItems.isEmpty)
+              SliverFillRemaining(
+                child: EmptyStateView(
+                  title: 'Tidak ada data ditemukan',
+                  subtitle: 'Coba ubah filter atau cari dengan kata kunci lain',
+                  icon: Icons.search_off_outlined,
+                  onRetry: () => notifier.loadMadings(),
+                ),
+              )
+            else
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                sliver: SliverGrid(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final item = filteredItems[index];
+                    return MadingCard(
+                      item: item,
+                      onTap: () {
+                        context.go('/mading/${item.id}');
+                      },
+                    );
+                  }, childCount: filteredItems.length),
+                  gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisExtent: 370,
+                        crossAxisSpacing: 14,
+                        mainAxisSpacing: 16,
+                      ),
+                ),
+              ),
 
             const SliverToBoxAdapter(child: SizedBox(height: 80)),
           ],
@@ -260,7 +274,10 @@ class MadingView extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              Expanded(
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.5,
+                ),
                 child: ListView.separated(
                   itemCount: options.length,
                   separatorBuilder: (_, _) => const Divider(height: 1),
@@ -270,7 +287,7 @@ class MadingView extends ConsumerWidget {
                       title: Text(option, style: AppTextStyles.regular14),
                       onTap: () {
                         notifier.selectSubCategory(option);
-                        Navigator.pop(context);
+                        context.pop();
                       },
                     );
                   },

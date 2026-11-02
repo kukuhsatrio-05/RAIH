@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:raih/core/constants/env_constants.dart';
 import 'package:raih/core/theme/app_theme.dart';
-import 'package:raih/features/mading/presentation/mading_screen.dart';
+import 'package:raih/app/config/router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,12 +21,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'RAIH',
       debugShowCheckedModeBanner: false,
-      // routerConfig: AppRouter.router,
+      routerConfig: AppRouter.router,
       theme: AppTheme.lightTheme,
-      home: MadingDetailView(postId: 'lomba-1'),
     );
   }
 }

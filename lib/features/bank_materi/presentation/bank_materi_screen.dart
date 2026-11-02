@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:raih/core/widgets/empty_state_view.dart';
 import 'package:raih/features/bank_materi/presentation/bank_materi_controller.dart';
 import 'package:raih/features/bank_materi/presentation/widgets/document_card_widget.dart';
 
@@ -201,13 +202,19 @@ class BankMateriView extends ConsumerWidget {
   // --- KOMPONEN LIST DOKUMEN ---
   Widget _buildDocumentList(List documents) {
     return Expanded(
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        itemCount: documents.length,
-        itemBuilder: (context, index) {
-          return DocumentCardWidget(document: documents[index]);
-        },
-      ),
+      child: documents.isEmpty
+          ? EmptyStateView(
+              title: 'Tidak ada materi ditemukan',
+              subtitle: 'Coba ubah filter atau cari dengan kata kunci lain',
+              icon: Icons.library_books_outlined,
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              itemCount: documents.length,
+              itemBuilder: (context, index) {
+                return DocumentCardWidget(document: documents[index]);
+              },
+            ),
     );
   }
 

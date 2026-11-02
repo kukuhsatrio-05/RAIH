@@ -3,15 +3,72 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:raih/core/theme/app_colors.dart';
 import 'package:raih/core/theme/app_text_styles.dart';
 import 'package:raih/features/auth/presentation/auth_controller.dart';
 
-class LoginView extends ConsumerWidget {
+class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends ConsumerState<LoginView> {
+  @override
+  void initState() {
+    super.initState();
+    // Listen untuk error & success state
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.listen(loginProvider, (prev, next) {
+        // Show error SnackBar
+        if (next.errorMessage != null && next.errorMessage!.isNotEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.white),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      next.errorMessage!,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.red.shade700,
+              duration: const Duration(seconds: 4),
+              behavior: SnackBarBehavior.floating,
+              margin: const EdgeInsets.all(16),
+            ),
+          );
+        }
+        
+        // Redirect ke home jika sukses (tidak loading, tidak ada error)
+        if (!next.isLoading && next.errorMessage == null && 
+            (prev?.isLoading ?? false)) {
+          print('✅ Login Success - Redirect to /home');
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Login berhasil!'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            ),
+          );
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (context.mounted) {
+              context.go('/home');
+            }
+          });
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(loginProvider);
     final notifier = ref.read(loginProvider.notifier);
     final screenHeight = MediaQuery.of(context).size.height;
@@ -162,7 +219,7 @@ class LoginView extends ConsumerWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // Navigasi ke halaman Daftar
+                              context.go('/register');
                             },
                             child: Text(
                               'Daftar',

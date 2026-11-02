@@ -69,12 +69,14 @@ class LoginModels {
   final String password;
   final bool isPasswordVisible;
   final bool isLoading;
+  final String? errorMessage;
 
   const LoginModels({
     this.email = '',
     this.password = '',
     this.isPasswordVisible = false,
     this.isLoading = false,
+    this.errorMessage,
   });
 
   bool get isEmailNotEmpty => email.trim().isNotEmpty;
@@ -87,12 +89,14 @@ class LoginModels {
     String? password,
     bool? isPasswordVisible,
     bool? isLoading,
+    String? errorMessage,
   }) {
     return LoginModels(
       email: email ?? this.email,
       password: password ?? this.password,
       isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
       isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage,
     );
   }
 
@@ -123,6 +127,7 @@ class RegisterModels {
   final bool isPasswordVisible;
   final bool isConfirmPasswordVisible;
   final bool isLoading;
+  final String? errorMessage;
 
   const RegisterModels({
     this.fullName = '',
@@ -134,6 +139,7 @@ class RegisterModels {
     this.isPasswordVisible = false,
     this.isConfirmPasswordVisible = false,
     this.isLoading = false,
+    this.errorMessage,
   });
 
   bool get isPasswordMatch =>
@@ -158,6 +164,7 @@ class RegisterModels {
     bool? isPasswordVisible,
     bool? isConfirmPasswordVisible,
     bool? isLoading,
+    String? errorMessage,
   }) {
     return RegisterModels(
       fullName: fullName ?? this.fullName,
@@ -170,6 +177,7 @@ class RegisterModels {
       isConfirmPasswordVisible:
           isConfirmPasswordVisible ?? this.isConfirmPasswordVisible,
       isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage,
     );
   }
 

@@ -1,15 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:raih/core/theme/app_colors.dart';
 import 'package:raih/core/theme/app_text_styles.dart';
 import 'package:raih/features/auth/presentation/auth_controller.dart';
 
-class RegisterView extends ConsumerWidget {
+class RegisterView extends ConsumerStatefulWidget {
   const RegisterView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends ConsumerState<RegisterView> {
+  @override
+  void initState() {
+    super.initState();
+    // Listen untuk error & success state
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.listen(registerProvider, (prev, next) {
+        // Show error SnackBar
+        if (next.errorMessage != null && next.errorMessage!.isNotEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.white),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      next.errorMessage!,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.red.shade700,
+              duration: const Duration(seconds: 4),
+              behavior: SnackBarBehavior.floating,
+              margin: const EdgeInsets.all(16),
+            ),
+          );
+        }
+        
+        // Redirect ke home/onboarding jika sukses (tidak loading, tidak ada error)
+        if (!next.isLoading && next.errorMessage == null && 
+            (prev?.isLoading ?? false)) {
+          print('✅ Register Success - Redirect to /home');
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Registrasi berhasil! Silakan selesaikan profil Anda.'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 2),
+            ),
+          );
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (context.mounted) {
+              context.go('/home');
+            }
+          });
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(registerProvider);
     final notifier = ref.read(registerProvider.notifier);
     final screenHeight = MediaQuery.of(context).size.height;
@@ -144,7 +201,7 @@ class RegisterView extends ConsumerWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // Navigasi ke Halaman Login
+                              context.go('/login');
                             },
                             child: Text(
                               'Masuk',

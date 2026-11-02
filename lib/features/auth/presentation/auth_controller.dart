@@ -21,15 +21,19 @@ class LoginViewModel extends Notifier<LoginModels> {
   Future<void> submitLogin() async {
     if (!state.isFormValid) return;
 
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      // TODO: Query Supabase table atau panggil Supabase Auth/Storage
       final authRepo = ref.read(authRepositoryProvider);
       await authRepo.loginWithEmail(state.email, state.password);
-    } catch (_) {
-      // Handle error if needed
-    } finally {
       state = state.copyWith(isLoading: false);
+      // Redirect via router setelah sukses (handle di UI/listener)
+    } catch (e) {
+      final errorMsg = e.toString();
+      print('❌ Login Error: $errorMsg');
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: errorMsg,
+      );
     }
   }
 }
@@ -73,9 +77,8 @@ class RegisterViewModel extends Notifier<RegisterModels> {
   Future<void> submitRegister() async {
     if (!state.isFormValid) return;
 
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      // TODO: Query Supabase table atau panggil Supabase Auth/Storage
       final authRepo = ref.read(authRepositoryProvider);
       await authRepo.registerWithEmail(
         email: state.email,
@@ -84,10 +87,15 @@ class RegisterViewModel extends Notifier<RegisterModels> {
         phoneNumber: state.phoneNumber,
         faculty: state.selectedInstitution ?? '',
       );
-    } catch (_) {
-      // Handle error if needed
-    } finally {
       state = state.copyWith(isLoading: false);
+      // Redirect via router setelah sukses (handle di UI/listener)
+    } catch (e) {
+      final errorMsg = e.toString();
+      print('❌ Register Error: $errorMsg');
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: errorMsg,
+      );
     }
   }
 }
