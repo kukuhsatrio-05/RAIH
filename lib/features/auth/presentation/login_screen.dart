@@ -19,52 +19,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
   @override
   void initState() {
     super.initState();
-    // Listen untuk error & success state
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.listen(loginProvider, (prev, next) {
-        // Show error SnackBar
-        if (next.errorMessage != null && next.errorMessage!.isNotEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  const Icon(Icons.error_outline, color: Colors.white),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      next.errorMessage!,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: Colors.red.shade700,
-              duration: const Duration(seconds: 4),
-              behavior: SnackBarBehavior.floating,
-              margin: const EdgeInsets.all(16),
-            ),
-          );
-        }
-        
-        // Redirect ke home jika sukses (tidak loading, tidak ada error)
-        if (!next.isLoading && next.errorMessage == null && 
-            (prev?.isLoading ?? false)) {
-          print('✅ Login Success - Redirect to /home');
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Login berhasil!'),
-              backgroundColor: Colors.green,
-              duration: Duration(seconds: 2),
-            ),
-          );
-          Future.delayed(const Duration(milliseconds: 500), () {
-            if (context.mounted) {
-              context.go('/home');
-            }
-          });
-        }
-      });
-    });
   }
 
   @override
@@ -315,7 +269,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           ),
                         ),
                       ),
-
+                      SizedBox(height: 8,),
                       // Lupa Kata Sandi
                       Align(
                         alignment: Alignment.centerLeft,
@@ -326,7 +280,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           style: TextButton.styleFrom(padding: EdgeInsets.zero),
                           child: Text(
                             'Lupa Kata Sandi?',
-                            style: AppTextStyles.regular14.copyWith(
+                            style: AppTextStyles.regular12.copyWith(
                               color: AppColors.blueGradientEnd,
                             ),
                           ),
@@ -349,7 +303,38 @@ class _LoginViewState extends ConsumerState<LoginView> {
                             ),
                           ),
                           onPressed: state.isFormValid && !state.isLoading
-                              ? notifier.submitLogin
+                              ? () async {
+                                  // Submit login
+                                  await notifier.submitLogin();
+                                  
+                                  // Check state setelah submit
+                                  if (context.mounted) {
+                                    // Jika sukses (tidak ada error), redirect ke home
+                                    if (state.errorMessage == null || state.errorMessage!.isEmpty) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Login berhasil!'),
+                                          backgroundColor: Colors.green,
+                                          duration: Duration(seconds: 1),
+                                        ),
+                                      );
+                                      Future.delayed(const Duration(milliseconds: 500), () {
+                                        if (context.mounted) {
+                                          context.go('/home');
+                                        }
+                                      });
+                                    } else {
+                                      // Error sudah di-handle di listener state
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(state.errorMessage!),
+                                          backgroundColor: Colors.red.shade700,
+                                          duration: const Duration(seconds: 3),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                }
                               : null,
                           child: state.isLoading
                               ? const SizedBox(

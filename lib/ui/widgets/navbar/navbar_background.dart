@@ -40,7 +40,7 @@ class NavbarBackgroundPainter extends CustomPainter {
     final double height = size.height;
 
     const double y0 = 0.0;
-    const double cornerRadius = 28.0;
+    const double cornerRadius =32.0;
 
     // Calculate the notch center
     final double itemWidth = width / itemCount;
@@ -54,7 +54,7 @@ class NavbarBackgroundPainter extends CustomPainter {
     path.quadraticBezierTo(0, y0, cornerRadius, y0);
 
     // Flat top edge to the notch
-    const double notchWidth = 90.0;
+    const double notchWidth = 100.0;
     final double startX = x0 - notchWidth / 2;
     final double endX = x0 + notchWidth / 2;
     const double depth = 30.0;

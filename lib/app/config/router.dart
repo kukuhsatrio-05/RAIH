@@ -1,9 +1,8 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter/material.dart';
+import 'package:raih/features/splash/presentation/splash_screen.dart';
 import 'package:raih/features/onboarding/presentation/onboarding_screen.dart';
-import 'package:raih/features/auth/presentation/auth_screen.dart';
 import 'package:raih/features/auth/presentation/login_screen.dart';
 import 'package:raih/features/auth/presentation/register_screen.dart';
 import 'package:raih/features/home/presentation/home_screen.dart';
@@ -20,14 +19,14 @@ import 'package:raih/features/bank_materi/presentation/document_detail_screen.da
 class AppRouter {
   // Route auth (tidak perlu login)
   static const _publicRoutes = [
+    '/splash',
     '/onboarding',
-    '/auth-option',
     '/login',
     '/register',
   ];
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/onboarding',
+    initialLocation: '/splash',
     redirect: (context, state) {
       final session = Supabase.instance.client.auth.currentSession;
       final isLoggedIn = session != null;
@@ -39,9 +38,9 @@ class AppRouter {
         return '/home';
       }
 
-      // ✅ Belum login tapi mau ke protected route → redirect ke auth-option
+      // ✅ Belum login tapi mau ke protected route → redirect ke onboarding
       if (!isLoggedIn && !isOnPublicRoute) {
-        return '/auth-option';
+        return '/onboarding';
       }
 
       return null;
@@ -49,23 +48,13 @@ class AppRouter {
     routes: [
       // ======================== PUBLIC ROUTES (no navbar) ========================
       GoRoute(
-        path: '/onboarding',
-        builder: (context, state) => const OnboardingView(),
+        path: '/splash',
+        builder: (context, state) => const SplashScreen(),
       ),
 
       GoRoute(
-        path: '/auth-option',
-        pageBuilder: (context, state) {
-          return CustomTransitionPage(
-            key: state.pageKey,
-            child: const AuthOptionView(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-            transitionDuration: const Duration(milliseconds: 300),
-          );
-        },
+        path: '/onboarding',
+        builder: (context, state) => const OnboardingView(),
       ),
 
       GoRoute(path: '/login', builder: (context, state) => const LoginView()),

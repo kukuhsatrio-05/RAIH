@@ -39,8 +39,25 @@ class CustomBottomNavbar extends StatelessWidget {
               builder: (context, animValue, child) {
                 return Stack(
                   clipBehavior: Clip.none,
-
                   children: [
+                    // Shadow layer (top)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 5,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.2),
+                              blurRadius: 10,
+                              offset: const Offset(0, -2),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     //------------------------------------------------
                     // Background
                     //------------------------------------------------

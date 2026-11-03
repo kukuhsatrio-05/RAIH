@@ -25,8 +25,9 @@ class LoginViewModel extends Notifier<LoginModels> {
     try {
       final authRepo = ref.read(authRepositoryProvider);
       await authRepo.loginWithEmail(state.email, state.password);
+      print('✅ Login Success - User authenticated');
       state = state.copyWith(isLoading: false);
-      // Redirect via router setelah sukses (handle di UI/listener)
+      // Success - state updated, router will redirect via listener
     } catch (e) {
       final errorMsg = e.toString();
       print('❌ Login Error: $errorMsg');
@@ -46,14 +47,25 @@ class RegisterViewModel extends Notifier<RegisterModels> {
   @override
   RegisterModels build() => const RegisterModels();
 
-  final List<String> institutions = [
-    'Universitas Brawijaya',
-    'Universitas Indonesia',
-    'Institut Teknologi Bandung',
-    'Universitas Gadjah Mada',
-    'Lainnya / Perusahaan',
+final List<String> faculties = [
+    'Fakultas Ilmu Komputer (FILKOM)',
+    'Fakultas Teknik (FT)',
+    'Fakultas Ekonomi dan Bisnis (FEB)',
+    'Fakultas Hukum (FH)',
+    'Fakultas Ilmu Administrasi (FIA)',
+    'Fakultas Pertanian (FP)',
+    'Fakultas Peternakan (FAPET)',
+    'Fakultas Kedokteran (FK)',
+    'Fakultas Perikanan dan Ilmu Kelautan (FPIK)',
+    'Fakultas Matematika dan Ilmu Pengetahuan Alam (FMIPA)',
+    'Fakultas Teknologi Pertanian (FTP)',
+    'Fakultas Ilmu Sosial dan Ilmu Politik (FISIP)',
+    'Fakultas Ilmu Budaya (FIB)',
+    'Fakultas Kedokteran Gigi (FKG)',
+    'Fakultas Kedokteran Hewan (FKH)',
+    'Program Vokasi',
+    'Lainnya',
   ];
-
   void setFullName(String value) => state = state.copyWith(fullName: value);
   void setEmail(String value) => state = state.copyWith(email: value);
   void setPhoneNumber(String value) =>
