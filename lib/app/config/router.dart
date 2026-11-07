@@ -10,6 +10,7 @@ import 'package:raih/features/mading/presentation/mading_screen.dart';
 import 'package:raih/features/mading/presentation/mading_details_screen.dart';
 import 'package:raih/features/materi/presentation/materi_screen.dart';
 import 'package:raih/features/profile/presentation/profile_screen.dart';
+import 'package:raih/features/profile/presentation/edit_profile_screen.dart';
 import 'package:raih/features/upload/presentation/upload_screen.dart';
 import 'package:raih/features/home/presentation/event_detail_screen.dart';
 import 'package:raih/ui/layouts/navbar_layout.dart';
@@ -62,6 +63,12 @@ class AppRouter {
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterView(),
+      ),
+
+      // Edit / lengkapi profil (full screen, tanpa navbar)
+      GoRoute(
+        path: '/profile/edit',
+        builder: (context, state) => const EditProfileScreen(),
       ),
 
       // ======================== PROTECTED ROUTES (with navbar) ========================

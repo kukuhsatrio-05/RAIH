@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:raih/core/constants/env_constants.dart';
 import 'package:raih/core/theme/app_theme.dart';
 import 'package:raih/app/config/router.dart';
@@ -13,6 +14,8 @@ Future<void> main() async {
     url: EnvConstants.supabaseUrl,
     publishableKey: EnvConstants.supabasePublishableKey,
   );
+  // Initialize locale data for date formatting
+  await initializeDateFormatting('id_ID', null);
   runApp(const ProviderScope(child: MyApp()));
 }
 

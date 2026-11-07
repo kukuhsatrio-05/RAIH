@@ -25,12 +25,10 @@ class LoginViewModel extends Notifier<LoginModels> {
     try {
       final authRepo = ref.read(authRepositoryProvider);
       await authRepo.loginWithEmail(state.email, state.password);
-      print('✅ Login Success - User authenticated');
       state = state.copyWith(isLoading: false);
       // Success - state updated, router will redirect via listener
     } catch (e) {
       final errorMsg = e.toString();
-      print('❌ Login Error: $errorMsg');
       state = state.copyWith(
         isLoading: false,
         errorMessage: errorMsg,
@@ -103,7 +101,6 @@ final List<String> faculties = [
       // Redirect via router setelah sukses (handle di UI/listener)
     } catch (e) {
       final errorMsg = e.toString();
-      print('❌ Register Error: $errorMsg');
       state = state.copyWith(
         isLoading: false,
         errorMessage: errorMsg,

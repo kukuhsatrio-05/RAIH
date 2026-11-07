@@ -13,9 +13,8 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
 class AuthRepository {
   final SupabaseClient _supabase;
 
-  AuthRepository({
-    SupabaseClient? supabaseClient,
-  }) : _supabase = supabaseClient ?? Supabase.instance.client;
+  AuthRepository({SupabaseClient? supabaseClient})
+    : _supabase = supabaseClient ?? Supabase.instance.client;
 
   // TODO: Query Supabase table atau panggil Supabase Auth/Storage
   Future<UserEntity> loginWithEmail(String email, String password) async {
@@ -60,7 +59,7 @@ class AuthRepository {
       'full_name': fullName,
       'phone_number': phoneNumber,
       'faculty': faculty,
-      'is_profile_completed': true,
+      'is_profile_completed': false,
     });
 
     return UserModel(
@@ -69,7 +68,7 @@ class AuthRepository {
       fullName: fullName,
       phoneNumber: phoneNumber,
       faculty: faculty,
-      isProfileCompleted: true,
+      isProfileCompleted: false,
     );
   }
 
