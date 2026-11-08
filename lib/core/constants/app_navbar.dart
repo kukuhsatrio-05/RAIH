@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:raih/model/navbar_item_models.dart';
+import 'package:raih/core/models/navbar_item_models.dart';
 
 class AppNavbar {
   AppNavbar._();

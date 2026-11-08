@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:raih/core/constants/app_navbar.dart';
-import 'package:raih/model/navbar_item_models.dart';
+import 'package:raih/core/models/navbar_item_models.dart';
 
 import 'navbar_item.dart';
 import 'navbar_background.dart';
