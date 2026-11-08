@@ -34,12 +34,10 @@ class AppRouter {
       final currentPath = state.matchedLocation;
       final isOnPublicRoute = _publicRoutes.contains(currentPath);
 
-      // ✅ Sudah login tapi masih di public route → redirect ke home
       if (isLoggedIn && isOnPublicRoute) {
         return '/home';
       }
 
-      // ✅ Belum login tapi mau ke protected route → redirect ke onboarding
       if (!isLoggedIn && !isOnPublicRoute) {
         return '/onboarding';
       }
@@ -47,7 +45,6 @@ class AppRouter {
       return null;
     },
     routes: [
-      // ======================== PUBLIC ROUTES (no navbar) ========================
       GoRoute(
         path: '/splash',
         builder: (context, state) => const SplashScreen(),
@@ -77,7 +74,6 @@ class AppRouter {
           return MainLayout(child: child);
         },
         routes: [
-          // Home & Event Detail
           GoRoute(
             path: '/home',
             builder: (context, state) => const HomeViews(),
@@ -91,7 +87,6 @@ class AppRouter {
             },
           ),
 
-          // Mading & Mading Detail
           GoRoute(
             path: '/mading',
             builder: (context, state) => const MadingView(),
@@ -105,7 +100,6 @@ class AppRouter {
             },
           ),
 
-          // Bank Materi & Document Detail
           GoRoute(
             path: '/bank-materi',
             builder: (context, state) => const BankMateriView(),
@@ -119,19 +113,16 @@ class AppRouter {
             },
           ),
 
-          // Materi
           GoRoute(
             path: '/materi',
             builder: (context, state) => const MateriView(),
           ),
 
-          // Upload
           GoRoute(
             path: '/upload',
             builder: (context, state) => const UploadView(),
           ),
 
-          // Profile
           GoRoute(
             path: '/profile',
             builder: (context, state) => const ProfileView(),
