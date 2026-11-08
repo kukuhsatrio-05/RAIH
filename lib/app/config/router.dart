@@ -13,7 +13,7 @@ import 'package:raih/features/profile/presentation/profile_screen.dart';
 import 'package:raih/features/profile/presentation/edit_profile_screen.dart';
 import 'package:raih/features/upload/presentation/upload_screen.dart';
 import 'package:raih/features/home/presentation/event_detail_screen.dart';
-import 'package:raih/ui/layouts/navbar_layout.dart';
+import 'package:raih/core/presentation/layouts/navbar_layout.dart';
 import 'package:raih/features/bank_materi/presentation/bank_materi_screen.dart';
 import 'package:raih/features/bank_materi/presentation/document_detail_screen.dart';
 
